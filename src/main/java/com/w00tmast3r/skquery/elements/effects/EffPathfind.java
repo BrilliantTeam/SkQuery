@@ -26,8 +26,7 @@ public class EffPathfind extends Effect {
     private Expression<Location> loc;
     private Expression<Number> speed;
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     protected void execute(Event event) {
         Location l = loc.getSingle(event);
         Number s = speed.getSingle(event);
@@ -35,8 +34,8 @@ public class EffPathfind extends Effect {
         for (LivingEntity e : entity.getAll(event)) {
             if (e instanceof Player) continue;
             try {
-                Object entityInsentient = Reflection.obcClass("entity.CraftLivingEntity").getMethod("getHandle").invoke(e);
-                Object navigation = Reflection.nmsClass("EntityInsentient").getMethod("getNavigation").invoke(entityInsentient);
+                Object entityInsentient = Reflection.getOBCClass("entity.CraftLivingEntity").getMethod("getHandle").invoke(e);
+                Object navigation = Reflection.getNMSClass("EntityInsentient").getMethod("getNavigation").invoke(entityInsentient);
                 navigation.getClass().getMethod("a", double.class, double.class, double.class, double.class).invoke(navigation, l.getX(), l.getY(), l.getZ(), s.doubleValue());
             } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e1) {
                 e1.printStackTrace();

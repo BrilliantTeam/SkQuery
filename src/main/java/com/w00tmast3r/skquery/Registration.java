@@ -1,6 +1,7 @@
 package com.w00tmast3r.skquery;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.conditions.base.PropertyCondition;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -19,39 +20,34 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class Registration {
 
-	/**
-	 * Allow skQuery to iterate through your plugin source and reflectively
-	 * register your classes. This method MUST be called from within your
-	 * plugin, for safety reasons.
-	 */
-	@SuppressWarnings({ "rawtypes", "resource" })
 	public static void enableSnooper() {
-		final Class caller = Reflection.getCaller();
+		final Class<?> caller = Reflection.getCaller();
 		final URL callerLocation = caller.getProtectionDomain().getCodeSource().getLocation();
-		Bukkit.getLogger().info("[skQuery] Snooping enabled from " + caller.getCanonicalName());
+		File src;
 		try {
-			File src;
-			try {
-				src = new File(callerLocation.toURI());
-			} catch (URISyntaxException e) {
-				src = new File(callerLocation.getPath());
-			}
+			src = new File(callerLocation.toURI());
+		} catch (URISyntaxException e) {
+			src = new File(callerLocation.getPath());
+		}
+		try {
 			PluginDescriptionFile desc = SkQuery.getInstance().getPluginLoader().getPluginDescription(src);
 			Bukkit.getLogger().info("[skQuery] Locating classes from " + desc.getName() + "...");
 			try {
-				ArrayList<Class> classes = new ArrayList<>();
+				Set<Class<?>> classes = new HashSet<>();
+				@SuppressWarnings("resource")
 				JarFile jar = new JarFile(src);
 				for (JarEntry e : new IterableEnumeration<>(jar.entries())) {
 					if (e.getName().endsWith(".class")) {
 						String className = e.getName().replace('/', '.').substring(0, e.getName().length() - 6);
 						try {
-							Class c = Class.forName(className, false, caller.getClassLoader());
+							Class<?> c = Class.forName(className, false, caller.getClassLoader());
 							if (c == Pragma.class || c == OptionsPragma.class || c == AbstractTask.class) continue;
 							if (Effect.class.isAssignableFrom(c)
 									|| Condition.class.isAssignableFrom(c)
@@ -65,7 +61,6 @@ public class Registration {
 						}
 					}
 				}
-				Bukkit.getLogger().info("[skQuery] Finished snooping of " + desc.getName() + " with " + classes.size() + " classes.");
 				register(desc, classes.toArray(new Class[classes.size()]));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -75,13 +70,12 @@ public class Registration {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
+	@SuppressWarnings({ "rawtypes", "unchecked"})
 	private static void register(PluginDescriptionFile info, Class[] classes) {
 		int success = 0;
 		Bukkit.getLogger().info("[skQuery] Beginning to process a total of " + classes.length + " from " + info.getName());
 		main: for (final Class c : classes) {
 			Annotation[] annotations = c.getAnnotations();
-			Patterns patterns = null;
 			for (Annotation a : annotations) {
 				if (a instanceof Dependency) {
 					for (String s : ((Dependency) a).value()) {
@@ -112,7 +106,7 @@ public class Registration {
 					Skript.registerCondition(c, ((Patterns) c.getAnnotation(Patterns.class)).value());
 					Documentation.addCondition(c);
 					success++;
-				} else {
+				} else if (!PropertyCondition.class.isAssignableFrom(c)) {
 					Bukkit.getLogger().info("[skQuery] " + c.getCanonicalName() + " is patternless and failed to register. This is most likely a code error.");
 				}
 			} else if (Expression.class.isAssignableFrom(c)) {
@@ -160,5 +154,4 @@ public class Registration {
 		}
 		Bukkit.getLogger().info("[skQuery] Out of " + classes.length + " classes, " + success + " classes were loaded from " + info.getName());
 	}
-
 }

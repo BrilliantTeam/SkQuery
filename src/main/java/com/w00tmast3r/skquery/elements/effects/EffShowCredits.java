@@ -18,13 +18,13 @@ public class EffShowCredits extends Effect {
 
     private Expression<Player> player;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "rawtypes" })
 	@Override
     protected void execute(Event event) {
         Player p = player.getSingle(event);
         if(p == null) return;
         try {
-            Constructor packetConstructor = Reflection.nmsClass("PacketPlayOutGameStateChange").getConstructor(int.class, int.class);
+            Constructor packetConstructor = Reflection.getNMSClass("PacketPlayOutGameStateChange").getConstructor(int.class, int.class);
             Object packet = packetConstructor.newInstance(4, 0);
             Reflection.sendPacket(packet, p);
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {

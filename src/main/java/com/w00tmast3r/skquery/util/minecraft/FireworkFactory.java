@@ -32,8 +32,8 @@ public class FireworkFactory {
 		}
 		f.setFireworkMeta(data);
 		try {
-			Class<?> entityFireworkClass = Reflection.nmsClass("EntityFireworks");
-			Class<?> craftFireworkClass = Reflection.obcClass("entity.CraftFirework");
+			Class<?> entityFireworkClass = Reflection.getNMSClass("EntityFireworks");
+			Class<?> craftFireworkClass = Reflection.getOBCClass("entity.CraftFirework");
 			Object firework = craftFireworkClass.cast(f);
 			Object entityFirework = firework.getClass().getMethod("getHandle").invoke(firework);
 			Field expectedLifespan = entityFireworkClass.getDeclaredField("expectedLifespan");

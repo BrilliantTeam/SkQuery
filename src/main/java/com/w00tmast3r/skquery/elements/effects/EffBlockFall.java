@@ -32,7 +32,7 @@ public class EffBlockFall extends Effect {
     private Expression<Location> loc;
     private boolean breaks, damages;
 
-    @SuppressWarnings({ "unchecked", "deprecation" })
+    @SuppressWarnings({ "deprecation" })
 	@Override
     protected void execute(Event event) {
         ItemType t = type.getSingle(event);
@@ -43,7 +43,7 @@ public class EffBlockFall extends Effect {
                 EffSpawn.lastSpawned = block;
                 if (damages) {
                     try {
-                        Object craftSand = Reflection.obcClass("entity.CraftFallingSand").getMethod("getHandle").invoke(block);
+                        Object craftSand = Reflection.getOBCClass("entity.CraftFallingSand").getMethod("getHandle").invoke(block);
                         craftSand.getClass().getMethod("a", boolean.class).invoke(craftSand, true);
                     } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         e.printStackTrace();

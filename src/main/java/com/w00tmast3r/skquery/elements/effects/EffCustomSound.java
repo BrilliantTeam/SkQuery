@@ -33,7 +33,7 @@ public class EffCustomSound extends Effect {
         if(s == null || l == null) return;
         for(Location fl : l){
             try {
-                Class<?> craftWorldClass = Reflection.obcClass("CraftWorld");
+                Class<?> craftWorldClass = Reflection.getOBCClass("CraftWorld");
                 Object worldServer = craftWorldClass.getMethod("getHandle").invoke(fl.getWorld());
                 worldServer.getClass().getMethod("makeSound", double.class, double.class, double.class, String.class, float.class, float.class).invoke(worldServer, fl.getX(), fl.getY(), fl.getZ(), s, p, v);
             } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {

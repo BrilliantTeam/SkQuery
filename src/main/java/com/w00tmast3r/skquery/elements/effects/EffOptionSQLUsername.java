@@ -6,7 +6,7 @@ import com.w00tmast3r.skquery.api.Examples;
 import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
-import com.w00tmast3r.skquery.db.ScriptCredentials;
+import com.w00tmast3r.skquery.sql.ScriptCredentials;
 
 import java.io.File;
 

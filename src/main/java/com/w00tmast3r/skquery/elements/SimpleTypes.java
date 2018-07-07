@@ -1,8 +1,12 @@
 package com.w00tmast3r.skquery.elements;
 
 import com.w00tmast3r.skquery.api.AbstractTask;
+import com.w00tmast3r.skquery.skript.EnumClassInfo;
 import com.w00tmast3r.skquery.skript.TypeClassInfo;
 import com.w00tmast3r.skquery.util.minecraft.MoonPhase;
+
+import java.sql.ResultSet;
+
 import org.bukkit.Art;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;
@@ -14,15 +18,18 @@ import org.bukkit.scoreboard.DisplaySlot;
 
 public class SimpleTypes extends AbstractTask {
 
-    @Override
-    public void run() {
-        TypeClassInfo.create(DisplaySlot.class, "displayslot").register();
-        TypeClassInfo.create(Sound.class, "sound").register();
-        TypeClassInfo.create(FireworkEffect.Type.class, "fireworktype").register();
-        TypeClassInfo.create(InventoryType.class, "inventorytype").register();
-        TypeClassInfo.create(Villager.Profession.class, "profession").register();
-        TypeClassInfo.create(Art.class, "art").register();
-        TypeClassInfo.create(MoonPhase.class, "moonphase").register();
-        TypeClassInfo.create(EntityRegainHealthEvent.RegainReason.class, "regainreason").register();
-    }
+	@Override
+	public void run() {
+		EnumClassInfo.create(EntityRegainHealthEvent.RegainReason.class, "regainreason").register();
+		EnumClassInfo.create(FireworkEffect.Type.class, "fireworktype").register();
+		EnumClassInfo.create(Villager.Profession.class, "profession").register();
+		EnumClassInfo.create(InventoryType.class, "inventorytype").register();
+		EnumClassInfo.create(DisplaySlot.class, "displayslot").register();
+		EnumClassInfo.create(MoonPhase.class, "moonphase").register();
+		EnumClassInfo.create(Sound.class, "sound").register();
+		EnumClassInfo.create(Art.class, "art").register();
+		
+		TypeClassInfo.create(FireworkEffect.class, "fireworkeffect").register();
+		TypeClassInfo.create(ResultSet.class, "queryresult").register();
+	}
 }

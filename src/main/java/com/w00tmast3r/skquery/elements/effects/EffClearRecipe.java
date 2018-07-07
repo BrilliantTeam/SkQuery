@@ -23,12 +23,11 @@ public class EffClearRecipe extends Effect {
 
     private Expression<ItemType> items;
 
-    @SuppressWarnings("unchecked")
-	@Override
+    @Override
     protected void execute(Event event) {
         for (ItemType type : items.getAll(event)) {
             try {
-                Object craftingInstance = Reflection.nmsClass("CraftingManager").getMethod("getInstance").invoke(null);
+                Object craftingInstance = Reflection.getNMSClass("CraftingManager").getMethod("getInstance").invoke(null);
                 Object recipes = Reflection.getField(craftingInstance.getClass(), "recipes").get(craftingInstance);
                 Reflection.getMethod(recipes.getClass(), "remove").invoke(recipes, type.getRandom().getType().getId());
             } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {

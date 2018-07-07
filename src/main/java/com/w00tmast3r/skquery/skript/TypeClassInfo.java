@@ -32,10 +32,6 @@ public class TypeClassInfo<T> {
 		return codeName + ':' + clazz.toString();
 	}
 	
-	public T parse(String s, ParseContext parseContext){
-		return null;
-	}
-	
 	public TypeClassInfo<T> serializer(Serializer<T> serializer) {
 		classInfo.serializer(serializer);
 		return this;
@@ -58,6 +54,11 @@ public class TypeClassInfo<T> {
 				@Override
 				public T parse(String s, ParseContext parseContext) {
 					return null;
+				}
+				
+				@Override
+				public boolean canParse(ParseContext context) {
+					return false;
 				}
 	
 				@Override

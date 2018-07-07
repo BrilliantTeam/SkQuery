@@ -30,6 +30,10 @@ public class EnumClassInfo<E extends Enum<E>> {
 		if (user == null) user = codeName + "s?";
 		return new EnumClassInfo<>(enumType, codeName, user);
 	}
+	
+	public static <E extends Enum<E>> EnumClassInfo<E> create(Class<E> enumType, String codeName) {
+		return new EnumClassInfo<>(enumType, codeName, null);
+	}
 
 	public EnumClassInfo<E> addSynonym(String regex, String actualValue) {
 		synonyms.put(regex, actualValue);
