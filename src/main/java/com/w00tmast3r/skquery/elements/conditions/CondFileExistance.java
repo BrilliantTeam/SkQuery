@@ -23,11 +23,13 @@ public class CondFileExistance extends Condition {
 	}
 	
 	private Expression<String> files;
+	private Expression<Boolean> check;
 	
 	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		files = (Expression<String>) exprs[0];
 		setNegated(parseResult.mark == 1);
+		if (exprs.length > 1) check = (Expression<Boolean>) exprs[0];
 		return true;
 	}
 
@@ -39,7 +41,8 @@ public class CondFileExistance extends Condition {
 	@Override
 	public boolean check(Event event) {
 		if (files == null) return !isNegated();
+		Boolean negated = (check != null) ? check.getSingle(event) : isNegated(); 
 		File file = new File(files.getSingle(event));
-		return file.exists() ? isNegated() : !isNegated();
+		return file.exists() ? negated : !negated;
 	}
 }
