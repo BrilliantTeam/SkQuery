@@ -19,4 +19,5 @@ public abstract class AbstractTask implements Runnable {
 		Documentation.addEvent(event, patterns);
 		Skript.registerEvent(name, handler, event, patterns);
 	}
+
 }

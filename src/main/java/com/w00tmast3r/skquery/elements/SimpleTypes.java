@@ -32,4 +32,5 @@ public class SimpleTypes extends AbstractTask {
 		TypeClassInfo.create(FireworkEffect.class, "fireworkeffect").register();
 		TypeClassInfo.create(ResultSet.class, "queryresult").register();
 	}
+
 }

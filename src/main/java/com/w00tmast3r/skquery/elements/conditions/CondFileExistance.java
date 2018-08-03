@@ -10,7 +10,7 @@ import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 @Name("File existance")
@@ -26,10 +26,10 @@ public class CondFileExistance extends Condition {
 	private Expression<Boolean> check;
 	
 	@SuppressWarnings("unchecked")
-	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-		files = (Expression<String>) exprs[0];
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		files = (Expression<String>) expressions[0];
 		setNegated(parseResult.mark == 1);
-		if (exprs.length > 1) check = (Expression<Boolean>) exprs[0];
+		if (expressions.length > 1) check = (Expression<Boolean>) expressions[0];
 		return true;
 	}
 
@@ -45,4 +45,5 @@ public class CondFileExistance extends Condition {
 		File file = new File(files.getSingle(event));
 		return file.exists() ? negated : !negated;
 	}
+
 }

@@ -4,9 +4,11 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.expressions.ExprInput;
 import com.w00tmast3r.skquery.skript.LambdaEffect;
+
 import org.bukkit.event.Event;
 
 @Patterns("do [%-number% time[s]] %lambda%")

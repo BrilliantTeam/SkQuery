@@ -10,6 +10,7 @@ import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
 import com.w00tmast3r.skquery.util.CancellableBukkitTask;
 import com.w00tmast3r.skquery.util.Collect;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 

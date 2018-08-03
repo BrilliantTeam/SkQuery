@@ -32,7 +32,7 @@ public class EnumClassInfo<E extends Enum<E>> {
 	}
 	
 	public static <E extends Enum<E>> EnumClassInfo<E> create(Class<E> enumType, String codeName) {
-		return new EnumClassInfo<>(enumType, codeName, null);
+		return new EnumClassInfo<>(enumType, codeName, codeName + "s?");
 	}
 
 	public EnumClassInfo<E> addSynonym(String regex, String actualValue) {
@@ -54,7 +54,6 @@ public class EnumClassInfo<E extends Enum<E>> {
 		if (Classes.getExactClassInfo(enumType) == null) {
 			//for .lang files in the future
 			//Classes.registerClass(classInfo.user(user).parser(new LangEnumParser<E>(codeName, enumType)).serializer(new EnumSerializer<>(enumType)));
-			} else {
 			Classes.registerClass(classInfo.user(user).parser(new Parser<E>() {
 				@Override
 				public E parse(String s, ParseContext parseContext) {

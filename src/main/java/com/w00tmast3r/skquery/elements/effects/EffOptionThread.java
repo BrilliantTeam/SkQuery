@@ -8,6 +8,7 @@ import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.effects.base.Pragma;
 import com.w00tmast3r.skquery.util.CancellableBukkitTask;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 

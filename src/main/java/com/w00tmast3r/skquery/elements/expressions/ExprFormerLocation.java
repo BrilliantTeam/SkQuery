@@ -3,6 +3,7 @@ package com.w00tmast3r.skquery.elements.expressions;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
+
 import com.w00tmast3r.skquery.api.Patterns;
 
 import ch.njol.skript.ScriptLoader;

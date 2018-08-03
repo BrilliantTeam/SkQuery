@@ -1,6 +1,7 @@
 package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.lang.SkriptParser;
+
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;

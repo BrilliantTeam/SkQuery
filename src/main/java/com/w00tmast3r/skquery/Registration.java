@@ -11,6 +11,7 @@ import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
 import com.w00tmast3r.skquery.elements.effects.base.Pragma;
 import com.w00tmast3r.skquery.util.IterableEnumeration;
 import com.w00tmast3r.skquery.util.Reflection;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidDescriptionException;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -154,4 +155,5 @@ public class Registration {
 		}
 		Bukkit.getLogger().info("[skQuery] Out of " + classes.length + " classes, " + success + " classes were loaded from " + info.getName());
 	}
+
 }

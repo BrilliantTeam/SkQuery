@@ -9,10 +9,12 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
-import com.w00tmast3r.skquery.api.Patterns;
+
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.server.ServerListPingEvent;
+
+import com.w00tmast3r.skquery.api.Patterns;
 
 
 @Patterns("[the] [max] player count")

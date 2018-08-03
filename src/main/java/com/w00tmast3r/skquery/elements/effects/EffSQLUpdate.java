@@ -7,6 +7,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
+
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;
 

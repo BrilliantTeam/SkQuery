@@ -8,10 +8,12 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
+
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.events.lang.FunctionEvent;
 import com.w00tmast3r.skquery.skript.TransEventObjects;
 import com.w00tmast3r.skquery.util.Collect;
+
 import org.bukkit.event.Event;
 
 @Patterns("transient [object] %string%")

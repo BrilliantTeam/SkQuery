@@ -55,4 +55,5 @@ public final class SkQuery extends JavaPlugin {
 	public static Metrics getMetrics() {
 		return metrics;
 	}
+
 }

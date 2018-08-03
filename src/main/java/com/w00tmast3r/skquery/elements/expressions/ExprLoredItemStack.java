@@ -5,11 +5,13 @@ import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import com.w00tmast3r.skquery.api.Patterns;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.w00tmast3r.skquery.api.Patterns;
 
 import java.util.Arrays;
 

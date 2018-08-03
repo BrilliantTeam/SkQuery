@@ -1,11 +1,13 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.TNTPrimed;
+
 import com.w00tmast3r.skquery.api.PropertyFrom;
 import com.w00tmast3r.skquery.api.PropertyTo;
 import com.w00tmast3r.skquery.api.UsePropertyPatterns;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.TNTPrimed;
 
 @UsePropertyPatterns
 @PropertyFrom("entities")

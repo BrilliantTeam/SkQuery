@@ -3,7 +3,15 @@ package com.w00tmast3r.skquery;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import com.w00tmast3r.skquery.api.*;
+
+import com.w00tmast3r.skquery.api.Description;
+import com.w00tmast3r.skquery.api.DocumentationHidden;
+import com.w00tmast3r.skquery.api.Examples;
+import com.w00tmast3r.skquery.api.Name;
+import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.api.PropertyFrom;
+import com.w00tmast3r.skquery.api.PropertyTo;
+import com.w00tmast3r.skquery.api.UsePropertyPatterns;
 import com.w00tmast3r.skquery.util.Reflection;
 import com.w00tmast3r.skquery.util.SkQueryInternalException;
 
@@ -20,7 +28,9 @@ import org.bukkit.event.Event;
 public class Documentation {
 
 	private static HashMap<Class<?>, String[]> events = new HashMap<>();
-	private static Set<Class<?>> conditions, effects, expressions = new HashSet<>();
+	private static Set<Class<?>> expressions = new HashSet<>();
+	private static Set<Class<?>> conditions = new HashSet<>();
+	private static Set<Class<?>> effects = new HashSet<>();
 
 	public static void generateDocs() {
 		if (Reflection.getCaller().getProtectionDomain().getCodeSource().getLocation().sameFile(Documentation.class.getProtectionDomain().getCodeSource().getLocation())) {
@@ -154,4 +164,5 @@ public class Documentation {
 	public static void addExpression(Class<? extends Expression<?>> expression) {
 		expressions.add(expression);
 	}
+
 }

@@ -1,11 +1,12 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import com.w00tmast3r.skquery.api.Patterns;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
+
+import com.w00tmast3r.skquery.api.Patterns;
 
 
 @Patterns("text from [url] %string%")

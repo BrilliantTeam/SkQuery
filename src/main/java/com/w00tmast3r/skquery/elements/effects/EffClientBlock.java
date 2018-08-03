@@ -5,14 +5,16 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Name;
-import com.w00tmast3r.skquery.api.Patterns;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+
+import com.w00tmast3r.skquery.api.Description;
+import com.w00tmast3r.skquery.api.Examples;
+import com.w00tmast3r.skquery.api.Name;
+import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Client Block")
 @Description("Make a player see a block as another type of block. If the client recieves an update to the block, it will revert.")
