@@ -12,6 +12,7 @@ Changes:
 - Removed broken MySQL support (Might add my own methods later) You can use Skellett until then. Example and Example.
 - Added file existance condition file `[exist[(s|ance)] [at]] %string% or file %string% exists`
 - Removed some files that were not used
+- Remove lores, Skript 2.3+ has lores now.
 - Fixed Yaml
 - Fixed getOnlinePlayers() crash
 - Fixed glowing itemtype
