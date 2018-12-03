@@ -2,7 +2,7 @@ package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 import org.bukkit.Bukkit;
@@ -14,23 +14,24 @@ import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Clear Server Recipes")
-@Description("Clears all recipes registered in the server. Use ((EffClearRecipe)this effect) to clear individual recipes.")
+@Description("Clears all recipes registered in the server. Use ((EffClearItemRecipe)this effect) to clear individual recipes.")
 @Examples("on script load:;->wipe server crafting recipes")
 @Patterns("wipe server crafting recipes")
 public class EffClearRecipes extends Effect {
 
-    @Override
-    protected void execute(Event event) {
-        Bukkit.getServer().clearRecipes();
-    }
+	@Override
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		return true;
+	}
+	
+	@Override
+	protected void execute(Event event) {
+		Bukkit.getServer().clearRecipes();
+	}
 
-    @Override
-    public String toString(Event event, boolean b) {
-        return "MFG recipes";
-    }
+	@Override
+	public String toString(Event event, boolean b) {
+		return "clear recipes";
+	}
 
-    @Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        return true;
-    }
 }

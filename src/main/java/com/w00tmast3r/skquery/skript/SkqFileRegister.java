@@ -1,7 +1,6 @@
 package com.w00tmast3r.skquery.skript;
 
 import ch.njol.skript.Skript;
-import com.w00tmast3r.skquery.elements.effects.EffCustomEffect;
 import com.w00tmast3r.skquery.elements.expressions.ExprCustomExpression;
 import com.w00tmast3r.skquery.elements.expressions.ExprCustomPropertyExpression;
 import com.w00tmast3r.skquery.util.Collect;
@@ -120,7 +119,6 @@ public class SkqFileRegister {
         for (File f : Collect.getFiles(new File(Skript.getInstance().getDataFolder().getAbsolutePath() + File.separator + Skript.SCRIPTSFOLDER), filter)) {
             try (ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(f))))) {
                 SerializableDefinitions definitions = (SerializableDefinitions) in.readObject();
-                EffCustomEffect.addAll(definitions.getEffectList());
                 ExprCustomExpression.addAll(definitions.getExpressionList().entrySet());
                 ExprCustomPropertyExpression.addAll(definitions.getPropertyList().entrySet());
             } catch (IOException | ClassNotFoundException e) {
@@ -130,7 +128,6 @@ public class SkqFileRegister {
     }
 
     private static void register() {
-        EffCustomEffect.register();
         ExprCustomExpression.register();
         ExprCustomPropertyExpression.register();
     }

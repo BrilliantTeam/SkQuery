@@ -4,7 +4,7 @@ import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.effects.EffSpawn;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.api.Description;
@@ -17,59 +17,61 @@ import org.bukkit.Location;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import java.lang.reflect.InvocationTargetException;
 
 @Name("Spawn Falling Block")
 @Description("Summons falling blocks with modifiable properties.")
 @Examples("on place of dirt:;->cancel event;->spawn falling block of dirt at block")
-@Patterns({"spawn falling block of %itemtype% at %location%",
-        "spawn damaging falling block of %itemtype% at %location%",
-        "spawn undroppable falling block of %itemtype% at %location%",
-        "spawn damaging undroppable falling block of %itemtype% at %location%",
-        "spawn undroppable damaging falling block of %itemtype% at %location%"})
+@Patterns({"spawn falling block of %itemtype% at %locations%",
+		"spawn damaging falling block of %itemtype% at %locations%",
+		"spawn undroppable falling block of %itemtype% at %locations%",
+		"spawn damaging undroppable falling block of %itemtype% at %locations%",
+		"spawn undroppable damaging falling block of %itemtype% at %locations%"})
 public class EffBlockFall extends Effect {
 
-    private Expression<ItemType> type;
-    private Expression<Location> loc;
-    private boolean breaks, damages;
+	private Expression<Location> locations;
+	private Expression<ItemType> type;
+	private boolean breaks, damages;
 
-    @SuppressWarnings({ "deprecation" })
+	@SuppressWarnings("unchecked")
 	@Override
-    protected void execute(Event event) {
-        ItemType t = type.getSingle(event);
-        if(t == null) return;
-        for(Location locs : loc.getArray(event)) {
-            for(ItemStack i : t.getAll()){
-                FallingBlock block = locs.getWorld().spawnFallingBlock(locs, i.getType(), (byte) i.getDurability());
-                EffSpawn.lastSpawned = block;
-                if (damages) {
-                    try {
-                        Object craftSand = Reflection.getOBCClass("entity.CraftFallingSand").getMethod("getHandle").invoke(block);
-                        craftSand.getClass().getMethod("a", boolean.class).invoke(craftSand, true);
-                    } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (breaks) {
-                    block.setDropItem(false);
-                }
-            }
-        }
-    }
-
-    @Override
-    public String toString(Event event, boolean b) {
-        return "falling block";
-    }
-
-    @SuppressWarnings("unchecked")
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		type = (Expression<ItemType>) expressions[0];
+		locations = (Expression<Location>) expressions[1];
+		damages = (matchedPattern == 1 || matchedPattern == 3 || matchedPattern == 4);
+		breaks = (matchedPattern == 2 || matchedPattern == 3 || matchedPattern == 4);
+		return true;
+	}
+	
 	@Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        type = (Expression<ItemType>) expressions[0];
-        loc = (Expression<Location>) expressions[1];
-        damages = (i == 1 || i == 3 || i == 4);
-        breaks = (i == 2 || i == 3 || i == 4);
-        return true;
-    }
+	protected void execute(Event event) {
+		ItemType item = type.getSingle(event);
+		if (item == null) return;
+		for (Location location : locations.getArray(event)) {
+			for (ItemStack itemstack : item.getAll()) {
+				@SuppressWarnings("deprecation")
+				FallingBlock block = location.getWorld().spawnFallingBlock(location, new MaterialData(itemstack.getType(), (byte) itemstack.getDurability()));
+				EffSpawn.lastSpawned = block;
+				if (damages) {
+					try {
+						Object craftSand = Reflection.getOBCClass("entity.CraftFallingSand").getMethod("getHandle").invoke(block);
+						craftSand.getClass().getMethod("a", boolean.class).invoke(craftSand, true);
+					} catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				}
+				if (breaks) {
+					block.setDropItem(false);
+				}
+			}
+		}
+	}
+
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "falling block " + type.toString(event, debug);
+	}
+
 }

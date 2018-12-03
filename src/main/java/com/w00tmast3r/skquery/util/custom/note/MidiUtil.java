@@ -4,122 +4,108 @@ package com.w00tmast3r.skquery.util.custom.note;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import javax.sound.midi.*;
+import ch.njol.skript.Skript;
+
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Set;
 
-/**
- * Utility for playing midi files for players to hear.
- *
- * @author authorblues
- */
 public class MidiUtil {
 	
 	private static HashMap<String, NoteBlockReceiver> playing = new HashMap<>();
 	
-    private static void playMidi(Sequence seq, float tempo, Set<Player> listeners, String ID)
-            throws InvalidMidiDataException, IOException, MidiUnavailableException
-    {
-        Sequencer sequencer = MidiSystem.getSequencer(false);
-        sequencer.setSequence(seq);
-        sequencer.open();
+	private static void playMidi(Sequence seq, float tempo, Player[] listeners, String ID) {
+		try {
+			Sequencer sequencer = MidiSystem.getSequencer(false);
+			sequencer.setSequence(seq);
+			sequencer.open();
 
-        // slow it down just a bit
-        sequencer.setTempoFactor(tempo);
+			// slow it down just a bit
+			sequencer.setTempoFactor(tempo);
+			NoteBlockReceiver reciever = new NoteBlockReceiver(listeners);
+			sequencer.getTransmitter().setReceiver(reciever);
+			sequencer.start();
+			playing.put(ID, reciever);
+		} catch (MidiUnavailableException | InvalidMidiDataException e) {
+			Skript.exception(e, "Error attempting to play a midi file");
+		}
+	}
+	
+	public static void playMidi(File file, float tempo, Player[] listeners, String ID) throws InvalidMidiDataException, IOException {
+		playMidi(MidiSystem.getSequence(file), tempo, listeners, ID);
+	}
 
-        NoteBlockReceiver noteblockRecv = new NoteBlockReceiver(listeners);
-        sequencer.getTransmitter().setReceiver(noteblockRecv);
-        sequencer.start();
-        playing.put(ID, noteblockRecv);
-    }
+	public static void playMidi(InputStream stream, float tempo, Player[] listeners, String ID) throws InvalidMidiDataException, IOException {
+		playMidi(MidiSystem.getSequence(stream), tempo, listeners, ID);
+	}
 
-    public static void dump() { playing.clear(); }
-    
-    public static void playMidi(File file, float tempo, Set<Player> listeners, String ID)
-            throws InvalidMidiDataException, IOException, MidiUnavailableException
-    { playMidi(MidiSystem.getSequence(file), tempo, listeners, ID); }
+	public static void playMidiQuietly(File file, float tempo, Player[] listeners, String ID) throws InvalidMidiDataException, IOException {
+		MidiUtil.playMidi(file, tempo, listeners, ID);
+	}
+	
+	public static void playMidiQuietly(InputStream stream, float tempo, Player[] listeners, String ID) throws InvalidMidiDataException, IOException {
+		MidiUtil.playMidi(stream, tempo, listeners, ID);
+	}
 
-    public static void playMidi(InputStream stream, float tempo, Set<Player> listeners, String ID)
-            throws InvalidMidiDataException, IOException, MidiUnavailableException
-    { playMidi(MidiSystem.getSequence(stream), tempo, listeners, ID); }
+	public static void playMidiQuietly(File file, Player[] listeners, String ID) throws InvalidMidiDataException, IOException {
+		playMidiQuietly(file, 1.0f, listeners, ID);
+	}
 
-    public static boolean playMidiQuietly(File file, float tempo, Set<Player> listeners, String ID)
-    {
-        try { MidiUtil.playMidi(file, tempo, listeners, ID); }
-        catch (MidiUnavailableException e) { e.printStackTrace(); return false; }
-        catch (InvalidMidiDataException e) { e.printStackTrace(); return false; }
-        catch (IOException e) { e.printStackTrace(); return false; }
+	public static void playMidiQuietly(InputStream stream, Player[] listeners, String ID) throws InvalidMidiDataException, IOException {
+		playMidiQuietly(stream, 1.0f, listeners, ID);
+	}
+	
+	public static boolean isPlaying(String ID) {
+		return playing.containsKey(ID);
+	}
+	
+	public static void stop(String ID) {
+		if (playing.containsKey(ID)) {
+			playing.get(ID).close();
+			playing.remove(ID);
+		}
+	}
 
-        return true;
-    }
-    public static boolean playMidiQuietly(InputStream stream, float tempo, Set<Player> listeners, String ID)
-    {
-        try { MidiUtil.playMidi(stream, tempo, listeners, ID); }
-        catch (MidiUnavailableException e) { e.printStackTrace(); return false; }
-        catch (InvalidMidiDataException e) { e.printStackTrace(); return false; }
-        catch (IOException e) { e.printStackTrace(); return false; }
+	// provided by github.com/sk89q/craftbook
+	private static final int[] instruments = {
+			0, 0, 0, 0, 0, 0, 0, 5, //   8
+			6, 0, 0, 0, 0, 0, 0, 0, //  16
+			0, 0, 0, 0, 0, 0, 0, 5, //  24
+			5, 5, 5, 5, 5, 5, 5, 5, //  32
+			6, 6, 6, 6, 6, 6, 6, 6, //  40
+			5, 5, 5, 5, 5, 5, 5, 2, //  48
+			5, 5, 5, 5, 0, 0, 0, 0, //  56
+			0, 0, 0, 0, 0, 0, 0, 0, //  64
+			0, 0, 0, 0, 0, 0, 0, 0, //  72
+			0, 0, 0, 0, 0, 0, 0, 0, //  80
+			0, 0, 0, 0, 0, 0, 0, 0, //  88
+			0, 0, 0, 0, 0, 0, 0, 0, //  96
+			0, 0, 0, 0, 0, 0, 0, 0, // 104
+			0, 0, 0, 0, 0, 0, 0, 0, // 112
+			1, 1, 1, 3, 1, 1, 1, 5, // 120
+			1, 1, 1, 1, 1, 2, 4, 3, // 128
+	};
 
-        return true;
-    }
+	public static Sound patchToInstrument(int patch) {
+		// look up the instrument matching the patch
+		switch (instruments[patch]) {
+			case 1: return Sound.BLOCK_NOTE_HAT;
+			case 2: return Sound.BLOCK_NOTE_SNARE;
+			case 3: return Sound.BLOCK_NOTE_HARP;
+			case 4: return Sound.BLOCK_NOTE_BASEDRUM;
+			case 5: return Sound.BLOCK_NOTE_PLING;
+			case 6: return Sound.BLOCK_NOTE_BASS;
+		}
 
-    public static boolean playMidiQuietly(File file, Set<Player> listeners, String ID)
-    { return playMidiQuietly(file, 1.0f, listeners, ID); }
+		// if no instrument match is found, use piano
+		return Sound.BLOCK_NOTE_BASS;
+	}
 
-    public static boolean playMidiQuietly(InputStream stream, Set<Player> listeners, String ID)
-    { return playMidiQuietly(stream, 1.0f, listeners, ID); }
-    
-    public static boolean isPlaying(String ID) {
-    	if (playing.containsKey(ID)) {
-    		return true;
-    	}
-    	return false;
-    }
-    
-    public static void stopMidi(String ID) {
-    	if (playing.containsKey(ID)) {
-    		playing.get(ID).close();
-    		playing.remove(ID);
-    	}
-    }
-
-    // provided by github.com/sk89q/craftbook
-    private static final int[] instruments = {
-            0, 0, 0, 0, 0, 0, 0, 5, //   8
-            6, 0, 0, 0, 0, 0, 0, 0, //  16
-            0, 0, 0, 0, 0, 0, 0, 5, //  24
-            5, 5, 5, 5, 5, 5, 5, 5, //  32
-            6, 6, 6, 6, 6, 6, 6, 6, //  40
-            5, 5, 5, 5, 5, 5, 5, 2, //  48
-            5, 5, 5, 5, 0, 0, 0, 0, //  56
-            0, 0, 0, 0, 0, 0, 0, 0, //  64
-            0, 0, 0, 0, 0, 0, 0, 0, //  72
-            0, 0, 0, 0, 0, 0, 0, 0, //  80
-            0, 0, 0, 0, 0, 0, 0, 0, //  88
-            0, 0, 0, 0, 0, 0, 0, 0, //  96
-            0, 0, 0, 0, 0, 0, 0, 0, // 104
-            0, 0, 0, 0, 0, 0, 0, 0, // 112
-            1, 1, 1, 3, 1, 1, 1, 5, // 120
-            1, 1, 1, 1, 1, 2, 4, 3, // 128
-    };
-
-    public static Sound patchToInstrument(int patch)
-    {
-        // look up the instrument matching the patch
-        switch (instruments[patch])
-        {
-            case 1: return Sound.BLOCK_NOTE_HAT;
-            case 2: return Sound.BLOCK_NOTE_SNARE;
-            case 3: return Sound.BLOCK_NOTE_HARP;
-            case 4: return Sound.BLOCK_NOTE_BASEDRUM;
-            case 5: return Sound.BLOCK_NOTE_PLING;
-            case 6: return Sound.BLOCK_NOTE_BASS;
-        }
-
-        // if no instrument match is found, use piano
-        return Sound.BLOCK_NOTE_BASS;
-    }
 }
-

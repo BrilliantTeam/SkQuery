@@ -5,7 +5,8 @@ import java.io.File;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
-import ch.njol.skript.Skript;
+import com.w00tmast3r.skquery.api.Patterns;
+
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Condition;
@@ -15,12 +16,8 @@ import ch.njol.util.Kleenean;
 
 @Name("File existance")
 @Description("Checks whether or not a file at the defined path(s) exist.")
+@Patterns({"file %string% (1¦does|2¦does(n't| not)) exist", "existance of [file] %string% is %boolean%"})
 public class CondFileExistance extends Condition {
-	
-	static {
-		Skript.registerCondition(CondFileExistance.class, "file %string% (1¦does|2¦does(n't| not)) exist",
-				"existance of [file] %string% is %boolean%"); //Umbaska's shitty syntax.
-	}
 	
 	private Expression<String> files;
 	private Expression<Boolean> check;

@@ -15,9 +15,8 @@ import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Set Block Without Updates")
 @Description("Set blocks to another block without causing surrounding blocks to update.")
-@Deprecated
 @Patterns("@noupdate::set %blocks% to %itemtype%")
-public class EffExtendsFuncSetBlock extends Effect {
+public class EffSetBlock extends Effect {
 
     private Expression<Block> blocks;
     private Expression<ItemType> toSet;

@@ -8,8 +8,6 @@ import com.w00tmast3r.skquery.skript.DynamicEnumTypes;
 import com.w00tmast3r.skquery.skript.SkqFileRegister;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;
 import com.w00tmast3r.skquery.util.custom.menus.v2_.FormattedSlotManager;
-import com.w00tmast3r.skquery.util.custom.note.MidiUtil;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +24,7 @@ public final class SkQuery extends JavaPlugin {
 		instance = this;
 		DynamicEnumTypes.register();
 		getDataFolder().mkdirs();
-		addonInstance = Skript.registerAddon(this);
+		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		Registration.enableSnooper();
 		Bukkit.getPluginManager().registerEvents(new FormattedSlotManager(), this);
 		SkqFileRegister.load();
@@ -36,7 +34,6 @@ public final class SkQuery extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		ScriptCredentials.clear();
-		MidiUtil.dump();
 		EvtLambdaWhen.limiter.clear();
 	}
 	

@@ -3,7 +3,7 @@ package com.w00tmast3r.skquery.elements.effects;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.api.Description;
@@ -17,59 +17,65 @@ import org.bukkit.event.Event;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashSet;
+import java.net.URL;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiUnavailableException;
 
 @Name("Play MIDI")
 @Description("Plays a file with the extention .mid to a player.")
 @Examples("on join:;->play midi \"login\" to player")
-@Patterns("play midi %string% to %players% [at [tempo] %-number%]")
+@Patterns("play midi [from (website|link)] %string% (for|to) %players% [at [tempo] %-number%] [with id %-string%]")
 public class EffMIDI extends Effect {
 
-    private Expression<String> midi;
-    private Expression<Player> players;
-    private Expression<Number> tempo;
+	private Expression<String> midi, ID;
+	private Expression<Player> players;
+	private Expression<Number> tempo;
 
-    @Override
-    protected void execute(Event event) {
-        String m = midi.getSingle(event);
-        if(m == null) return;
-        File f = new File(Skript.getInstance().getDataFolder().getAbsolutePath() + File.separator + Skript.SCRIPTSFOLDER + File.separator + m + ".mid");
-        HashSet<Player> pList = new HashSet<>();
-        Float tempoFinal = (Float)1.0f;
-		if (tempo != null) {
-			Number num = tempo.getSingle(event);
-			tempoFinal = num.floatValue();
-		}
-        if (f.exists()) {
-            Collections.addAll(pList, players.getAll(event));
-            try {
-				MidiUtil.playMidi(f, tempoFinal, pList, m);
-			} catch (InvalidMidiDataException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (MidiUnavailableException e) {
-				e.printStackTrace();
-			}
-        } else {
-            Bukkit.getLogger().warning("Could not find midi file " + m + ".mid in the scripts folder");
-        }
-    }
-
-    @Override
-    public String toString(Event event, boolean b) {
-        return "midi";
-    }
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        midi = (Expression<String>) expressions[0];
-        players = (Expression<Player>) expressions[1];
-        return true;
-    }
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		midi = (Expression<String>) expressions[0];
+		players = (Expression<Player>) expressions[1];
+		tempo = (Expression<Number>) expressions[2];
+		ID = (Expression<String>) expressions[3];
+		return true;
+	}
+	
+	@Override
+	protected void execute(Event event) {
+		String track = midi.getSingle(event);
+		if (track == null) return;
+		File file = new File(Skript.getInstance().getDataFolder().getAbsolutePath() + File.separator + Skript.SCRIPTSFOLDER + File.separator + track + ".mid");
+		boolean check = false;
+		if (!file.exists()) {
+			file = new File(track);
+			if (!file.exists() && !file.getName().endsWith(".mid")) {
+				check = true;
+				Bukkit.getLogger().warning("Could not find midi file " + track + ".mid");
+				return;
+			}
+		}
+		Number t = 1;
+		if (t!= null) t = tempo.getSingle(event);
+		Player[] p = players.getArray(event);
+		String i = track;
+		if (i != null) i = ID.getSingle(event);
+		if (p == null) return;
+		try {
+			if (check) {
+				URL url = new URL(track);
+				if (url != null) MidiUtil.playMidi(url.openStream(), t.floatValue(), p, i);
+			} else {
+				MidiUtil.playMidi(file, t.floatValue(), p, i);
+			}
+		} catch (InvalidMidiDataException | IOException e) {
+			Skript.exception(e, "Could not play midi file " + track);
+		}
+	}
+
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "midi " + midi.toString(event, debug) + " to " + players.toString(event, debug);
+	}
+
 }

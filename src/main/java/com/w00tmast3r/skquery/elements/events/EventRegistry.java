@@ -162,8 +162,6 @@ public class EventRegistry extends AbstractTask {
             }
         }, 0);
 
-        registerEvent("*Custom Effect Logic", EvtCustomEffects.class, CustomEffectEvent.class, "custom effect [logic [for]] %string%");
-
         registerEvent("*Custom Expression Logic", EvtCustomExpressions.class, CustomExpressionEvent.class, "custom expression [logic [for]] %string%");
 
         registerEvent("*Custom Property Logic", EvtCustomProperties.class, CustomPropertyExpressionEvent.class, "custom property [logic [for]] %string% of %string%");

@@ -1,9 +1,10 @@
 package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.lang.Effect;
+
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.TriggerItem;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
@@ -19,39 +20,36 @@ import com.w00tmast3r.skquery.api.Patterns;
 @Patterns("escape %number% [(level[s]|line[s])]")
 public class EffEscape extends Effect {
 
-    private Expression<Number> esc;
+	private Expression<Number> escape;
 
-    @Override
-    protected void execute(Event event) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected TriggerItem walk(Event e) {
-        debug(e, false);
-        Number eli = esc.getSingle(e);
-        if(eli == null) return null;
-        int el = eli.intValue();
-        if(el <= 0) return getNext();
-        TriggerItem item = getNext();
-        for(int i = 0; i < el; i++){
-            if(item == null) return null;
-            item = item.getNext();
-        }
-        return item;
-    }
-
-
-
-    @Override
-    public String toString(Event event, boolean b) {
-        return "escape";
-    }
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        esc = (Expression<Number>) expressions[0];
-        return true;
-    }
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		escape = (Expression<Number>) expressions[0];
+		return true;
+	}
+	
+	@Override
+	protected void execute(Event event) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	protected TriggerItem walk(Event event) {
+		debug(event, false);
+		Number lines = escape.getSingle(event);
+		if (lines == null) return null;
+		TriggerItem item = getNext();
+		for (int i = 0; i < lines.intValue(); i++){
+			if (item == null) return null;
+			item = item.getNext();
+		}
+		return item;
+	}
+
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "escape " + escape.toString(event, debug);
+	}
+
 }

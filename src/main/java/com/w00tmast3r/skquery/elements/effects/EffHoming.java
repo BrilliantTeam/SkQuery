@@ -2,7 +2,7 @@ package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 import org.bukkit.Location;
@@ -18,35 +18,35 @@ import com.w00tmast3r.skquery.api.Patterns;
 @Name("Entity Homing")
 @Description("Cause an entity to home towards a locations. Specifying 'normally' reduces bugs caused by varying distances, but makes it less accurate.")
 @Examples("make targeted entity home towards player normally")
-@Patterns({"make %entity% home towards %location%",
-        "make %entity% home towards %location% normally"})
+@Patterns({"make %entity% home towards %location%", "make %entities% home towards %location% normally"})
 public class EffHoming extends Effect {
 
-    private Expression<Entity> from;
-    private Expression<Location> to;
-    private boolean isNormal;
+	private Expression<Entity> entities;
+	private Expression<Location> location;
+	private boolean isNormal;
 
-    @Override
-    protected void execute(Event event) {
-        Entity f = from.getSingle(event);
-        Location t = to.getSingle(event);
-        if(f  == null || t == null) return;
-        Vector v = t.toVector().subtract(f.getLocation().toVector());
-        if(isNormal) f.setVelocity(v.normalize());
-        else f.setVelocity(v);
-    }
-
-    @Override
-    public String toString(Event event, boolean b) {
-        return "home";
-    }
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        from = (Expression<Entity>) expressions[0];
-        to = (Expression<Location>) expressions[1];
-        isNormal = i == 1;
-        return true;
-    }
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		entities = (Expression<Entity>) expressions[0];
+		location = (Expression<Location>) expressions[1];
+		isNormal = matchedPattern == 1;
+		return true;
+	}
+	
+	@Override
+	protected void execute(Event event) {
+		Location loc = location.getSingle(event);
+		if (loc == null) return;
+		for (Entity entity : entities.getArray(event)) {
+			Vector vector = loc.toVector().subtract(entity.getLocation().toVector());
+			entity.setVelocity(isNormal ? vector.normalize() : vector);
+		}
+	}
+
+	@Override
+	public String toString(Event event, boolean debug) {
+		return "home from " + entities.toString(event, debug) + " to " + location.toString(event, debug);
+	}
+
 }
