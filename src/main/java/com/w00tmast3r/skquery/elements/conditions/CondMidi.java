@@ -3,6 +3,7 @@ package com.w00tmast3r.skquery.elements.conditions;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
@@ -23,13 +24,18 @@ public class CondMidi extends Condition {
 	@Override
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
 		ID = (Expression<String>) expressions[0];
+		setNegated(matchedPattern == 1);
 		return true;
 	}
 	
 	@Override
 	public boolean check(Event event) {
-		String title = ID.getSingle(event);
-		return MidiUtil.isPlaying(title);
+		return ID.check(event, new Checker<String>() {
+			@Override
+			public boolean check(String title) {
+				return MidiUtil.isPlaying(title);
+			}
+		}, isNegated());
 	}
 	
 	@Override
