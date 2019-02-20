@@ -1,4 +1,4 @@
-package com.w00tmast3r.skquery.util.custom.menus.v2_;
+package com.w00tmast3r.skquery.util.menus;
 
 import com.w00tmast3r.skquery.SkQuery;
 import com.w00tmast3r.skquery.util.BiValue;

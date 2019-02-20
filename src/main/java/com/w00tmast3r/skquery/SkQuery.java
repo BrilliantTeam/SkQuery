@@ -8,7 +8,7 @@ import com.w00tmast3r.skquery.skript.DynamicEnumTypes;
 import com.w00tmast3r.skquery.skript.LambdaCondition;
 import com.w00tmast3r.skquery.skript.SkqFileRegister;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;
-import com.w00tmast3r.skquery.util.custom.menus.v2_.FormattedSlotManager;
+import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
 
 import java.util.Set;
 

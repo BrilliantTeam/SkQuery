@@ -10,7 +10,8 @@ import com.w00tmast3r.skquery.api.Description;
 import com.w00tmast3r.skquery.api.Examples;
 import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
-import com.w00tmast3r.skquery.util.custom.note.MidiUtil;
+import com.w00tmast3r.skquery.util.note.MidiUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -24,12 +25,13 @@ import javax.sound.midi.InvalidMidiDataException;
 @Name("Play MIDI")
 @Description("Plays a file with the extention .mid to a player.")
 @Examples("on join:;->play midi \"login\" to player")
-@Patterns("play midi [from (website|link)] %string% (for|to) %players% [at [tempo] %-number%] [with id %-string%]")
+@Patterns({"play midi [from] %string% (for|to) %players% [at [tempo] %-number%] [with id %-string%]", "play midi from (website|link) %string% (for|to) %players% [at [tempo] %-number%] [with id %-string%]"})
 public class EffMIDI extends Effect {
 
 	private Expression<String> midi, ID;
 	private Expression<Player> players;
 	private Expression<Number> tempo;
+	private boolean url;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -38,35 +40,38 @@ public class EffMIDI extends Effect {
 		players = (Expression<Player>) expressions[1];
 		tempo = (Expression<Number>) expressions[2];
 		ID = (Expression<String>) expressions[3];
+		url = matchedPattern == 1;
 		return true;
 	}
 	
 	@Override
 	protected void execute(Event event) {
 		String track = midi.getSingle(event);
-		if (track == null) return;
-		File file = new File(Skript.getInstance().getDataFolder().getAbsolutePath() + File.separator + Skript.SCRIPTSFOLDER + File.separator + track + ".mid");
-		boolean check = false;
+		if (track == null)
+			return;
+		File file = new File(Skript.getInstance().getDataFolder(), Skript.SCRIPTSFOLDER + File.separator + track + ".mid");
 		if (!file.exists()) {
 			file = new File(track);
 			if (!file.exists() && !file.getName().endsWith(".mid")) {
-				check = true;
 				Bukkit.getLogger().warning("Could not find midi file " + track + ".mid");
 				return;
 			}
 		}
-		Number t = 1;
-		if (t!= null) t = tempo.getSingle(event);
-		Player[] p = players.getArray(event);
-		String i = track;
-		if (i != null) i = ID.getSingle(event);
-		if (p == null) return;
+		Number tempo = 1;
+		if (this.tempo != null)
+			tempo = this.tempo.getSingle(event);
+		Player[] players = this.players.getArray(event);
+		if (players == null)
+			return;
+		String ID = track;
+		if (this.ID != null)
+			ID = this.ID.getSingle(event);
 		try {
-			if (check) {
+			if (url) {
 				URL url = new URL(track);
-				if (url != null) MidiUtil.playMidi(url.openStream(), t.floatValue(), p, i);
+				MidiUtil.playMidi(url.openStream(), tempo.floatValue(), ID, players);
 			} else {
-				MidiUtil.playMidi(file, t.floatValue(), p, i);
+				MidiUtil.playMidi(file, tempo.floatValue(), ID, players);
 			}
 		} catch (InvalidMidiDataException | IOException e) {
 			Skript.exception(e, "Could not play midi file " + track);
@@ -75,7 +80,7 @@ public class EffMIDI extends Effect {
 
 	@Override
 	public String toString(Event event, boolean debug) {
-		return "midi " + midi.toString(event, debug) + " to " + players.toString(event, debug);
+		return "play midi " + midi.toString(event, debug) + " to " + players.toString(event, debug);
 	}
 
 }

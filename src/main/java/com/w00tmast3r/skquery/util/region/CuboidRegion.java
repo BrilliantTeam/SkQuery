@@ -1,4 +1,4 @@
-package com.w00tmast3r.skquery.util.custom.region;
+package com.w00tmast3r.skquery.util.region;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;

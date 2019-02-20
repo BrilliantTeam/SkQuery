@@ -10,6 +10,7 @@ import com.w00tmast3r.skquery.api.Examples;
 import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
+import com.w00tmast3r.skquery.util.minecraft.Utils;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -46,7 +47,7 @@ public class EffClientSign extends Effect {
 		String l4 = line4.getSingle(event);
 		for (Block block : blocks.getArray(event)) {
 			Material material = block.getType();
-			if (material == Material.SIGN_POST || material == Material.WALL_SIGN || material == Material.SIGN) {
+			if (material == Utils.materialAttempt("SIGN_POST", "SIGN") || material == Material.WALL_SIGN || material == Material.SIGN) {
 				for (Player player : players.getArray(event)){
 					player.sendSignChange(block.getLocation(), Collect.asArray(l1, l2, l3, l4));
 				}

@@ -28,7 +28,6 @@ public class EffEvaluateEffect extends Effect {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void execute(Event event) {
 		String pre = null;

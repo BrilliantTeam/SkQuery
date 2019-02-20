@@ -29,7 +29,8 @@ public class EffExecuteLambda extends Effect {
 	protected void execute(Event event) {
 		LambdaEffect lambda = effect.getSingle(event);
 		Number number = times.getSingle(event);
-		if (lambda == null) return;
+		if (lambda == null)
+			return;
 		if (number != null) {
 			for (int i = 0; i < number.intValue() ; i++) {
 				ExprInput.setInput(event, i);

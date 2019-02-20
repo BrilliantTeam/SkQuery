@@ -9,7 +9,8 @@ import com.w00tmast3r.skquery.api.Description;
 import com.w00tmast3r.skquery.api.Examples;
 import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
-import com.w00tmast3r.skquery.util.custom.note.MidiUtil;
+import com.w00tmast3r.skquery.util.note.MidiUtil;
+
 import org.bukkit.event.Event;
 
 @Name("Stop MIDI")
@@ -22,7 +23,7 @@ public class EffMIDIStop extends Effect {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+	public boolean init(Expression<?>[] expressions, int markedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
 		ID = (Expression<String>) expressions[0];
 		return true;
 	}
@@ -30,10 +31,10 @@ public class EffMIDIStop extends Effect {
 	@Override
 	protected void execute(Event event) {
 		String track = ID.getSingle(event);
-		if(track == null) return;
-		if (MidiUtil.isPlaying(track)) {
+		if (track == null)
+			return;
+		if (MidiUtil.isPlaying(track))
 			MidiUtil.stop(track);
-		}
 	}
 
 	@Override

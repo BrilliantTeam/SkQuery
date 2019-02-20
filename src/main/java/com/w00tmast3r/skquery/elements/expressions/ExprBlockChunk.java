@@ -8,7 +8,8 @@ import ch.njol.util.coll.iterator.EmptyIterator;
 import ch.njol.util.coll.iterator.IteratorIterable;
 
 import com.w00tmast3r.skquery.api.Patterns;
-import com.w00tmast3r.skquery.util.custom.region.CuboidIterator;
+import com.w00tmast3r.skquery.util.region.CuboidIterator;
+
 import org.bukkit.Chunk;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;

@@ -17,8 +17,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
 import java.lang.reflect.InvocationTargetException;
 
 @Name("Spawn Falling Block")
@@ -48,11 +46,11 @@ public class EffBlockFall extends Effect {
 	@Override
 	protected void execute(Event event) {
 		ItemType item = type.getSingle(event);
-		if (item == null) return;
+		if (item == null)
+			return;
 		for (Location location : locations.getArray(event)) {
 			for (ItemStack itemstack : item.getAll()) {
-				@SuppressWarnings("deprecation")
-				FallingBlock block = location.getWorld().spawnFallingBlock(location, new MaterialData(itemstack.getType(), (byte) itemstack.getDurability()));
+				FallingBlock block = location.getWorld().spawnFallingBlock(location, itemstack.getType().createBlockData());
 				EffSpawn.lastSpawned = block;
 				if (damages) {
 					try {

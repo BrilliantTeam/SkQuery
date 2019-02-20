@@ -37,8 +37,9 @@ public class EffBranch extends Effect {
 	protected TriggerItem walk(Event event) {
 		debug(event, false);
 		Number jumps = branch.getSingle(event);
-		if (jumps == null) return null;
-		for (int i = 0; i < jumps.intValue(); i++){
+		if (jumps == null)
+			return null;
+		for (int i = 0; i < jumps.intValue(); i++) {
 			TriggerItem.walk(getNext(), event);
 		}
 		return null;

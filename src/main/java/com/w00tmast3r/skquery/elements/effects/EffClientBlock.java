@@ -35,15 +35,17 @@ public class EffClientBlock extends Effect {
 		item = (Expression<ItemType>) expressions[2];
 		return true;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void execute(Event event) {
 		ItemType type = item.getSingle(event);
-		if (type == null) return;
+		if (type == null)
+			return;
 		ItemStack itemstack = type.getRandom();
 		Material material = itemstack.getType();
-		if (!material.isBlock()) return;
+		if (!material.isBlock())
+			return;
 		for (Player player : players.getArray(event)) {
 			for (Block block : blocks.getArray(event)) {
 				player.sendBlockChange(block.getLocation(), material, (byte) itemstack.getDurability());

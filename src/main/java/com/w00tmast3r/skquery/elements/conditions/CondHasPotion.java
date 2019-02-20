@@ -38,8 +38,8 @@ public class CondHasPotion extends Condition {
 	}
 
 	@Override
-	public String toString(Event event, boolean b) {
-		return "entity has potion";
+	public String toString(Event event, boolean debug) {
+		return livingEntity.toString(event, debug) + " has potion " + potion.toString(event, debug);
 	}
 
 }

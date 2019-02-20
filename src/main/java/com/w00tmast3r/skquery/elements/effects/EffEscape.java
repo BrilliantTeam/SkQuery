@@ -38,10 +38,12 @@ public class EffEscape extends Effect {
 	protected TriggerItem walk(Event event) {
 		debug(event, false);
 		Number lines = escape.getSingle(event);
-		if (lines == null) return null;
+		if (lines == null)
+			return null;
 		TriggerItem item = getNext();
 		for (int i = 0; i < lines.intValue(); i++){
-			if (item == null) return null;
+			if (item == null)
+				return null;
 			item = item.getNext();
 		}
 		return item;

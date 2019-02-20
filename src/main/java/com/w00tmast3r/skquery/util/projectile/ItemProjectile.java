@@ -1,4 +1,4 @@
-package com.w00tmast3r.skquery.util.custom.projectile;
+package com.w00tmast3r.skquery.util.projectile;
 
 import com.w00tmast3r.skquery.SkQuery;
 import com.w00tmast3r.skquery.util.CancellableBukkitTask;

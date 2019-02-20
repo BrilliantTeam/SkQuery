@@ -14,7 +14,7 @@ import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Is Prime")
 @Description("Checks whether or not a number is prime.")
-@Patterns({"%number% is prime", "%number% is not prime"})
+@Patterns({"%number% is [a] prime [number]", "%number% is not [a] prime [number]"})
 public class CondIsPrime extends Condition {
 
 	private Expression<Number> number;
@@ -28,24 +28,26 @@ public class CondIsPrime extends Condition {
 	}
 	
 	@Override
-	public boolean check(final Event event) {
+	public boolean check(Event event) {
 		return number.check(event, new Checker<Number>() {
 			@Override
-			public boolean check(final Number in) {
-				return isPrime(in.intValue());
+			public boolean check(Number number) {
+				return isPrime(number.intValue());
 			}
 		}, isNegated());
 	}
 
 	@Override
-	public String toString(Event event, boolean b) {
-		return "is prime";
+	public String toString(Event event, boolean debug) {
+		return number.toString(event, debug) + " is a prime";
 	}
 
-	public static boolean isPrime(int n) {
-		if (n % 2 == 0) return false;
-		for (int i = 3; i * i <= n; i += 2) {
-			if (n % i == 0) return false;
+	public static boolean isPrime(int number) {
+		if (number % 2 == 0)
+			return false;
+		for (int i = 3; i * i <= number; i += 2) {
+			if (number % i == 0)
+				return false;
 		}
 		return true;
 	}

@@ -39,8 +39,8 @@ public class CondIsDivisible extends Condition {
 	}
 
 	@Override
-	public String toString(Event event, boolean b) {
-		return "is divisible";
+	public String toString(Event event, boolean debug) {
+		return number.toString(event, debug) + " is divisible by " + divisible.toString(event, debug);
 	}
 
 }

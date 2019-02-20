@@ -1,4 +1,4 @@
-package com.w00tmast3r.skquery.util.custom.projectile;
+package com.w00tmast3r.skquery.util.projectile;
 
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;

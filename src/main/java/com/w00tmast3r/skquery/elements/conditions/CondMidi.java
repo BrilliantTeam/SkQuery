@@ -1,6 +1,5 @@
 package com.w00tmast3r.skquery.elements.conditions;
 
-import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -11,30 +10,31 @@ import org.bukkit.event.Event;
 import com.w00tmast3r.skquery.api.Description;
 import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.util.note.MidiUtil;
 
-@Name("Is Block")
-@Description("Checks whether or not a certain itemtype is a placeable block.")
-@Patterns({"%itemtype% is [a] block", "%itemtype% (isn't|is not) not [a] block"})
-public class CondIsBlock extends Condition {
+@Name("Midi is playing")
+@Description("Checks whether or not a midi ID is playing.")
+@Patterns({"midi [ids] %strings% (are|is) playing", "midi [ids] %strings% (are|is)(n't| not) playing"})
+public class CondMidi extends Condition {
 
-	private Expression<ItemType> itemtype;
+	private Expression<String> ID;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		itemtype = (Expression<ItemType>) expressions[0];
-		setNegated(matchedPattern == 1);
+		ID = (Expression<String>) expressions[0];
 		return true;
 	}
 	
 	@Override
 	public boolean check(Event event) {
-		return isNegated() ? !itemtype.getSingle(event).hasBlock() : itemtype.getSingle(event).hasBlock();
+		String title = ID.getSingle(event);
+		return MidiUtil.isPlaying(title);
 	}
-
+	
 	@Override
 	public String toString(Event event, boolean debug) {
-		return itemtype.toString(event, debug) + " is a block";
+		return "midi " + ID.toString(event, debug) + " is playing";
 	}
 
 }

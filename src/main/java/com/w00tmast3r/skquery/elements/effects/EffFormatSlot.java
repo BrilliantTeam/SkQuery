@@ -9,8 +9,9 @@ import com.w00tmast3r.skquery.api.Description;
 import com.w00tmast3r.skquery.api.Examples;
 import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
-import com.w00tmast3r.skquery.util.custom.menus.v2_.FormattedSlotManager;
-import com.w00tmast3r.skquery.util.custom.menus.v2_.SlotRule;
+import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
+import com.w00tmast3r.skquery.util.menus.SlotRule;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryType;

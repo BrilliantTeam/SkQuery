@@ -12,7 +12,7 @@ import com.w00tmast3r.skquery.api.UsePropertyPatterns;
 @UsePropertyPatterns
 @PropertyFrom("entities")
 @PropertyTo("(primer|fuse lighting piece of shit)")
-public class ExprMIDI extends SimplePropertyExpression<Entity, Entity> {
+public class ExprTntSource extends SimplePropertyExpression<Entity, Entity> {
 
     @Override
     protected String getPropertyName() {
