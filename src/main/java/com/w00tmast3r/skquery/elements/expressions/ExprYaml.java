@@ -81,13 +81,19 @@ public class ExprYaml extends SimpleExpression<Object>{
 		if (state == States.VALUE) {
 			return CollectionUtils.array(config.get(node.getSingle(e)));
 		} else if (state == States.NODES) {
+			if (!config.isConfigurationSection(node.getSingle(e)))
+				return null;
 			Set<String> nodes = config.getConfigurationSection(node.getSingle(e)).getKeys(false);
 			return nodes.toArray(new String[nodes.size()]);
 		} else if (state == States.NODES_KEYS) {
+			if (!config.isConfigurationSection(node.getSingle(e)))
+				return null;
 			Set<String> nodesKeys = config.getConfigurationSection(node.getSingle(e)).getKeys(true);
 			return nodesKeys.toArray(new String[nodesKeys.size()]);
 		} else if (state == States.LIST) {
 			List<?> items = config.getList(node.getSingle(e));
+			if (items == null || items.isEmpty())
+				return null;
 			return items.toArray();
 		}
 		return null;
@@ -138,7 +144,12 @@ public class ExprYaml extends SimpleExpression<Object>{
 			}
 		}
 		try {
-			config.save(file.getSingle(e));
+			File f = new File(file.getSingle(e));
+			if (!f.exists()) {
+				f.mkdirs();
+				f.createNewFile();
+			}
+			config.save(f);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

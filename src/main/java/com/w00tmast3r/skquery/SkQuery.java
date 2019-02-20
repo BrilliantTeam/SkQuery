@@ -5,9 +5,13 @@ import ch.njol.skript.SkriptAddon;
 
 import com.w00tmast3r.skquery.elements.events.EvtLambdaWhen;
 import com.w00tmast3r.skquery.skript.DynamicEnumTypes;
+import com.w00tmast3r.skquery.skript.LambdaCondition;
 import com.w00tmast3r.skquery.skript.SkqFileRegister;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;
 import com.w00tmast3r.skquery.util.custom.menus.v2_.FormattedSlotManager;
+
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +38,9 @@ public final class SkQuery extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		ScriptCredentials.clear();
+		Set<LambdaCondition> limiter = EvtLambdaWhen.limiter;
+		if (limiter == null || limiter.isEmpty())
+			return;
 		EvtLambdaWhen.limiter.clear();
 	}
 	

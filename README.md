@@ -1,7 +1,6 @@
-SkQuery By LimeBae
-v3.5.9-Lime
+SkQuery
+v3.6.3
 =======
-A Re-Mastered SkQuery build (1.9+ supported)
 
 Changes:
 - A lot of bug fixes
@@ -29,8 +28,7 @@ Changes:
 do [%-number% time[s]] %lambda%
 ```
 - Added former movement location. Uses the getFrom() in the on any movement that never existed.
-```
-([the] (past|former) move[ment] [location]
+`([the] (past|former) move[ment] [location]`
 ```
 - Added settable relative option to the time relative syntax.
 ```
@@ -59,4 +57,4 @@ But these syntax still work:
 make %players% see %block% as %itemtype%
 make %players% see lines of %block% as %string%, %string%, %string%[ and], %string%
 ```
-https://www.spigotmc.org/resources/unofficial-skquery-fork-1-6-1-12.36631/
+https://www.spigotmc.org/resources/skquery.36631/
