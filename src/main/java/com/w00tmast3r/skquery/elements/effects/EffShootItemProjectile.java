@@ -13,7 +13,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 
 
-@Patterns("make %livingentity% shoot [an] item projectile [of] %itemtype%[ at speed %number%]")
+@Patterns("make %livingentity% shoot [an] item projectile [of] %itemtype% [at speed %number%]")
 public class EffShootItemProjectile extends Effect {
 
     private Expression<ItemType> projectile;

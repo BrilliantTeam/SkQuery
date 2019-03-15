@@ -1,5 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java-library'
-apply plugin: 'eclipse'
 
 repositories {
 	mavenCentral()
@@ -35,4 +35,15 @@ dependencies {
 		transitive = false
 	}
 
+}
+
+processResources {
+	filter ReplaceTokens, tokens: ["version": project.property("version")]
+	from ('lang') {
+        include '**/*'
+        into 'lang/'
+    }
+	from (sourceSets.main.resources.srcDirs) {
+		include '**/*.yml'
+	}
 }

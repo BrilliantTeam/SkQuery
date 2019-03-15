@@ -29,9 +29,9 @@ import org.bukkit.inventory.ItemStack;
 })
 public class EffFormatSlot extends Effect {
 
-	private Expression<Number> slot;
 	private Expression<Player> targets;
 	private Expression<ItemStack> item;
+	private Expression<Number> slot;
 	private Expression<?> callback;
 	private int action;
 
@@ -40,8 +40,10 @@ public class EffFormatSlot extends Effect {
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
 		slot = (Expression<Number>) expressions[0];
 		targets = (Expression<Player>) expressions[1];
-		if (matchedPattern <= 3) item = (Expression<ItemStack>) expressions[2];
-		if (matchedPattern <= 1) callback = expressions[3];
+		if (matchedPattern <= 3)
+			item = (Expression<ItemStack>) expressions[2];
+		if (matchedPattern <= 1)
+			callback = expressions[3];
 		action = matchedPattern;
 		return true;
 	}
@@ -49,26 +51,30 @@ public class EffFormatSlot extends Effect {
 	@Override
 	protected void execute(Event event) {
 		Number s = slot.getSingle(event);
+		if (s == null)
+			return;
 		Object c;
 		ItemStack i = null;
-		if (s == null) return;
 		SlotRule toClone;
 		switch (action) {
 			case 0:
 				c = callback.getSingle(event);
 				i = item.getSingle(event);
-				if (c == null) return;
+				if (c == null)
+						return;
 				toClone = new SlotRule(c, true);
 				break;
 			case 1:
 				c = callback.getSingle(event);
 				i = item.getSingle(event);
-				if (c == null) return;
+				if (c == null)
+					return;
 				toClone = new SlotRule(c, false);
 				break;
 			case 2:
 				i = item.getSingle(event);
-				if (i == null) return;
+				if (i == null)
+					return;
 				toClone = new SlotRule(null, true);
 				break;
 			case 3:
@@ -76,27 +82,26 @@ public class EffFormatSlot extends Effect {
 				toClone = new SlotRule(null, false);
 				break;
 			case 4:
-				for (Player p : targets.getAll(event)) {
+				for (Player p : targets.getArray(event)) {
 					FormattedSlotManager.removeRule(p, s.intValue());
 				}
 				return;
 			default:
-				assert false;
 				return;
 		}
 		if (i != null) {
-			for (Player p : targets.getAll(event)) {
+			for (Player p : targets.getArray(event)) {
 				if (p.getOpenInventory().getType() != InventoryType.CRAFTING) p.getOpenInventory().setItem(s.intValue(), i);
 			}
 		}
-		for (Player p : targets.getAll(event)) {
-			if (p.getOpenInventory().getType() != InventoryType.CRAFTING) FormattedSlotManager.addRule(event, p, s.intValue(), toClone.getCopy());
+		for (Player p : targets.getArray(event)) {
+			if (p.getOpenInventory().getType() != InventoryType.CRAFTING) FormattedSlotManager.addRule(event, p, s.intValue(), toClone.clone());
 		}
 	}
 
 	@Override
 	public String toString(Event event, boolean b) {
-		return "format";
+		return "format slot";
 	}
 
 }

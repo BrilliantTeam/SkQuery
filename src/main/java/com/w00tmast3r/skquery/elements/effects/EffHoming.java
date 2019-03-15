@@ -37,7 +37,8 @@ public class EffHoming extends Effect {
 	@Override
 	protected void execute(Event event) {
 		Location loc = location.getSingle(event);
-		if (loc == null) return;
+		if (loc == null)
+			return;
 		for (Entity entity : entities.getArray(event)) {
 			Vector vector = loc.toVector().subtract(entity.getLocation().toVector());
 			entity.setVelocity(isNormal ? vector.normalize() : vector);

@@ -15,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 @Name("Restore Inventory")
 @Description("Restores a player's inventory to a backup. This effect is deprecated and you should use ((ExprInventorySerials)Inventory Serials) instead.")
 @Patterns("restore %inventories% (to|from) %string%")
-public class EffDeserializeReturn extends Effect {
+public class EffDeserializeInventory extends Effect {
 
 	private Expression<Inventory> inventories;
 	private Expression<String> serialize;
