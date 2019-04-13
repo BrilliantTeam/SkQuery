@@ -32,7 +32,7 @@ public final class SkQuery extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new FormattedSlotManager(), this);
 		SkqFileRegister.load();
 		metrics = new Metrics(this);
-		new Documentation(this);
+		//new Documentation(this);
 	}
 
 	@Override

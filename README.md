@@ -36,6 +36,7 @@ do [%-number% time[s]] %lambda%
 ```
 - Added settable relative option to the time relative syntax.
 ```
+```
 (relative|player) time of %player% [with relative %-boolean%]
 
 #or
