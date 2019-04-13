@@ -20,38 +20,40 @@ import org.bukkit.potion.PotionType;
 @Patterns("blank %potioneffecttype% [colo[u]r[ed]] potion")
 public class ExprColoredPotion extends SimpleExpression<ItemStack> {
 
-    private Expression<PotionEffectType> effect;
+	private Expression<PotionEffectType> effect;
 
-    @Override
-    protected ItemStack[] get(Event e) {
-        PotionEffectType p = effect.getSingle(e);
-        if (p == null) return null;
-        ItemStack potion = new Potion(PotionType.getByEffect(p)).toItemStack(1);
-        PotionMeta meta = ((PotionMeta) potion.getItemMeta());
-        meta.addCustomEffect(new PotionEffect(p, 0, 0), true);
-        potion.setItemMeta(meta);
-        return Collect.asArray(potion);
-    }
-
-    @Override
-    public boolean isSingle() {
-        return true;
-    }
-
-    @Override
-    public Class<? extends ItemStack> getReturnType() {
-        return ItemStack.class;
-    }
-
-    @Override
-    public String toString(Event e, boolean debug) {
-        return "potionless potion";
-    }
-
-    @SuppressWarnings("unchecked")
 	@Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        effect = (Expression<PotionEffectType>) exprs[0];
-        return true;
-    }
+	protected ItemStack[] get(Event event) {
+		PotionEffectType potion = effect.getSingle(event);
+		if (potion == null)
+			return null;
+		ItemStack item = new Potion(PotionType.getByEffect(potion)).toItemStack(1);
+		PotionMeta meta = ((PotionMeta) item.getItemMeta());
+		meta.addCustomEffect(new PotionEffect(potion, 0, 0), true);
+		item.setItemMeta(meta);
+		return Collect.asArray(item);
+	}
+
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
+
+	@Override
+	public Class<? extends ItemStack> getReturnType() {
+		return ItemStack.class;
+	}
+
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "potionless potion";
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		effect = (Expression<PotionEffectType>) exprs[0];
+		return true;
+	}
+
 }

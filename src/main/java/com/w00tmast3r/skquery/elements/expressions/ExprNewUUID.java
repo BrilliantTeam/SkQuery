@@ -4,18 +4,21 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import com.w00tmast3r.skquery.SkQuery;
+
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 
 import org.bukkit.event.Event;
 
-@Patterns("skquery version")
-public class ExprSkQueryVersion extends SimpleExpression<String> {
+import java.util.UUID;
+
+
+@Patterns("[new] (guid|uuid)")
+public class ExprNewUUID extends SimpleExpression<String> {
 
     @Override
-    protected String[] get(Event e) {
-        return Collect.asArray(SkQuery.getInstance().getDescription().getVersion());
+    protected String[] get(Event event) {
+        return Collect.asArray(UUID.randomUUID().toString());
     }
 
     @Override
@@ -29,12 +32,12 @@ public class ExprSkQueryVersion extends SimpleExpression<String> {
     }
 
     @Override
-    public String toString(Event e, boolean debug) {
-        return "plugin version";
+    public String toString(Event event, boolean b) {
+        return "uuid";
     }
 
     @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         return true;
     }
 }
