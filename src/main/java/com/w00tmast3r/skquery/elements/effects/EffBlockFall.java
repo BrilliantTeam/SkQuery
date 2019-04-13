@@ -21,7 +21,9 @@ import java.lang.reflect.InvocationTargetException;
 
 @Name("Spawn Falling Block")
 @Description("Summons falling blocks with modifiable properties.")
-@Examples("on place of dirt:;->cancel event;->spawn falling block of dirt at block")
+@Examples({"on place of dirt:",
+		"	cancel event",
+		"	spawn falling block of dirt at block"})
 @Patterns({"spawn falling block of %itemtype% at %locations%",
 		"spawn damaging falling block of %itemtype% at %locations%",
 		"spawn undroppable falling block of %itemtype% at %locations%",

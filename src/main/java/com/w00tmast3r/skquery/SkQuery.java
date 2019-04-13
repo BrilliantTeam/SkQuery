@@ -27,12 +27,12 @@ public final class SkQuery extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		DynamicEnumTypes.register();
-		getDataFolder().mkdirs();
 		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		Registration.enableSnooper();
 		Bukkit.getPluginManager().registerEvents(new FormattedSlotManager(), this);
 		SkqFileRegister.load();
 		metrics = new Metrics(this);
+		new Documentation(this);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public final class SkQuery extends JavaPlugin {
 			return;
 		EvtLambdaWhen.limiter.clear();
 	}
-	
+
 	public static String cc(String colour) {
 		return ChatColor.translateAlternateColorCodes('&', colour);
 	}
@@ -51,7 +51,7 @@ public final class SkQuery extends JavaPlugin {
 	public static SkriptAddon getAddonInstance() {
 		return addonInstance;
 	}
-	
+
 	public static SkQuery getInstance() {
 		return instance;
 	}

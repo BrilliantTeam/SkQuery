@@ -14,11 +14,8 @@ import com.w00tmast3r.skquery.api.AbstractTask;
 import com.w00tmast3r.skquery.skript.LambdaCondition;
 import com.w00tmast3r.skquery.skript.LambdaEffect;
 import com.w00tmast3r.skquery.skript.Markup;
-import org.bukkit.Color;
 import java.io.NotSerializableException;
 import java.io.StreamCorruptedException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Types extends AbstractTask {
 
@@ -160,75 +157,6 @@ public class Types extends AbstractTask {
 					return ".+";
 				}
 			}));
-
-
-		if (Skript.classExists("org.bukkit.Color")) {
-			Classes.registerClass(new ClassInfo<>(Color.class, "rgbcolor")
-				.parser(new Parser<Color>() {
-					@Override
-					public Color parse(final String s, final ParseContext context) {
-						Matcher m = Pattern.compile("([0-9]{1,3})\\s*,\\s*([0-9]{1,3})\\s*,\\s*([0-9]{1,3})").matcher(s);
-						if (m.matches()) {
-							int r = Integer.parseInt(m.group(1));
-							int g = Integer.parseInt(m.group(2));
-							int b = Integer.parseInt(m.group(3));
-							if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) return null;
-							return Color.fromRGB(r, g, b);
-						}
-						ch.njol.skript.util.Color c = ch.njol.skript.util.Color.byName(s);
-						if (c == null) return null;
-						return c.getBukkitColor();
-					}
-
-					@Override
-					public String toString(final Color c, final int flags) {
-						return c.toString();
-					}
-
-					@Override
-					public String toVariableNameString(final Color o) {
-						return o.toString();
-					}
-
-					@Override
-					public String getVariableNamePattern() {
-						return ".+";
-					}
-				})
-				.serializer(new Serializer<Color>() {
-					@Override
-					public Fields serialize(Color o) throws NotSerializableException {
-						Fields f = new Fields();
-						f.putPrimitive("rgb", o.asRGB());
-						return f;
-					}
-
-					@Override
-					public void deserialize(Color o, Fields f) throws StreamCorruptedException, NotSerializableException {
-						assert false;
-					}
-
-					@Override
-					protected Color deserialize(Fields fields) throws StreamCorruptedException, NotSerializableException {
-						return Color.fromRGB(fields.getPrimitive("rgb", int.class));
-					}
-
-					@Override
-					public boolean mustSyncDeserialization() {
-						return true;
-					}
-
-					@Override
-					public boolean canBeInstantiated(Class<? extends Color> c) {
-						return false;
-					}
-
-					@Override
-					protected boolean canBeInstantiated() {
-						return false;
-					}
-				}));
-		}
 	}
 
 }

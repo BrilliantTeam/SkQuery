@@ -15,7 +15,10 @@ import org.bukkit.event.Event;
 
 @Name("Stop MIDI")
 @Description("Stops a midi file that is playing.")
-@Examples("on join:;->play midi \"login\" to player;wait 5 seconds;stop midi \"login\"")
+@Examples({"on join:",
+		"	play midi \"login\" to player",
+		"	wait 5 seconds",
+		"	stop midi \"login\""})
 @Patterns("stop midi [id] %string%")
 public class EffMIDIStop extends Effect {
 

@@ -15,7 +15,9 @@ import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Branch")
 @Description("Execute the following code X times. Useful for testing probabilities without requiring a loop and indentation.")
-@Examples("on script load:;->branch 10;->message \"This message will pop up 10 times\" to console")
+@Examples({"on script load:",
+		"	branch 10",
+		"	message \"This message will pop up 10 times\" to console"})
 @Patterns("branch %number%")
 public class EffBranch extends Effect {
 

@@ -43,6 +43,9 @@ processResources {
         include '**/*'
         into 'lang/'
     }
+    from ('documentation') {
+        into 'documentation/'
+    }
 	from (sourceSets.main.resources.srcDirs) {
 		include '**/*.yml'
 	}

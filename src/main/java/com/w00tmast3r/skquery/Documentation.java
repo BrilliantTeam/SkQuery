@@ -15,10 +15,13 @@ import com.w00tmast3r.skquery.api.UsePropertyPatterns;
 import com.w00tmast3r.skquery.util.Reflection;
 import com.w00tmast3r.skquery.util.SkQueryInternalException;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,28 +33,109 @@ public class Documentation {
 	private static HashMap<Class<?>, String[]> events = new HashMap<>();
 	private static Set<Class<?>> expressions = new HashSet<>();
 	private static Set<Class<?>> conditions = new HashSet<>();
-	private static Set<Class<?>> effects = new HashSet<>();
-
-	public static void generateDocs() {
-		if (Reflection.getCaller().getProtectionDomain().getCodeSource().getLocation().sameFile(Documentation.class.getProtectionDomain().getCodeSource().getLocation())) {
-			try {
-				generateDocsFor(conditions, "conditions");
-				generateDocsFor(effects, "effects");
-				generateDocsFor(expressions, "expressions");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
+	private static Set<Class<? extends Effect>> effects = new HashSet<>();
+	private final SkQuery instance;
+	
+	public Documentation(SkQuery instance) {
+		this.instance = instance;
+		if (!Reflection.getCaller().getProtectionDomain().getCodeSource().getLocation().sameFile(Documentation.class.getProtectionDomain().getCodeSource().getLocation()))
 			throw new SkQueryInternalException("Documentation could not be generated externally.");
+		try {
+			generateEffects();
+			generateDocsFor(conditions, "conditions");
+			generateDocsFor(expressions, "expressions");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void generateEffects() throws IOException {
+		File html = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "effects.html");
+		html.mkdir();
+		html.createNewFile();
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(html))) {
+			try (InputStream inputStream = instance.getResource("documentation/effects.html")) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+				while (reader.ready()) {
+					String line = reader.readLine();
+					if (!line.trim().equals("INSERT-SYNTAX")) {
+						if (line.trim().equals("INSERT-SCROLL")) {
+							for (Class<?> effect : effects) {
+								if (effect.isAnnotationPresent(DocumentationHidden.class))
+									continue;
+								writer.write("<a class=\"nav-link scrollto\" href=\"#" + effect.getSimpleName() + "\">" + effect.getSimpleName() + "</a>");
+								writer.newLine();
+							}
+							continue;
+						}
+						writer.write(line);
+						writer.newLine();
+						continue;
+					}
+					for (Class<?> effect : effects) {
+						if (effect.isAnnotationPresent(DocumentationHidden.class))
+							continue;
+						writer.write("<section id=\"" + effect.getSimpleName() + "\" class=\"doc-section\">");
+						writer.newLine();
+						if (effect.isAnnotationPresent(Name.class))
+							writer.write("	<h2 class=\"section-title\">" + effect.getAnnotation(Name.class).value() + "</h2>");
+						else
+							writer.write("	<h2 class=\"section-title\">" + effect.getSimpleName() + "</h2>");
+						writer.newLine();
+						writer.write("	<div class=\"section-block\">");
+						writer.newLine();
+						if (effect.isAnnotationPresent(Description.class)) {
+							writer.write("		<p>" + effect.getAnnotation(Description.class).value().replaceAll("\\(([^\\(\\)]+)?\\(([^\\(\\)]+)\\)([^\\(\\)]+)\\)", "<a href=\"$1#$2\">$3</a>") + "</p>");
+							writer.newLine();
+						}
+						writer.write("	</div>");
+						writer.newLine();
+						writer.write("	<div class=\"syntax-effects\">");
+						writer.newLine();
+						String syntax = "";
+						if (effect.isAnnotationPresent(UsePropertyPatterns.class)) {
+							syntax = "%" + effect.getAnnotation(PropertyFrom.class).value() + "%'s " + effect.getAnnotation(PropertyTo.class).value() + "<br/>";
+							syntax = syntax + "[the] " + effect.getAnnotation(PropertyTo.class).value() + " of %" + effect.getAnnotation(PropertyFrom.class).value() + "%";
+						} else {
+							for (String s : effect.getAnnotation(Patterns.class).value()) {
+								syntax = syntax + s + "<br/><br/>";
+							}
+						}
+						writer.write("		<code class=\"syntax-effects-button\">" + syntax.substring(0, syntax.lastIndexOf("<br/>")) + "</code>");
+						writer.newLine();
+						writer.write("		<span aria-hidden=\"true\" class=\"syntax-effects-copy-button icon_documents_alt\"></span>");
+						writer.newLine();
+						writer.write("	</div>");
+						writer.newLine();
+						if (effect.isAnnotationPresent(Examples.class)) {
+							writer.write("	<div id=\"html\" class=\"section-block\">");
+							writer.newLine();
+							writer.write("		<h6>Example</h6>");
+							writer.newLine();
+							String example = "";
+							for (String s : effect.getAnnotation(Examples.class).value()) {
+								example = example + s.replace("->", "\t").replace(";", "\n") + "\n";
+							}
+							writer.write("		<pre><code class=\"language-markup\">" + example + "</code></pre>");
+							writer.newLine();
+							writer.write("	</div>");
+							writer.newLine();
+							writer.write("</section>");
+							writer.newLine();
+						}
+			    	 }
+				}
+			}
 		}
 	}
 
-	private static void generateDocsFor(Set<Class<?>> classes, String filename) throws IOException {
-		File html = new File(SkQuery.getInstance().getDataFolder().getAbsolutePath() + File.separator + filename + ".html");
+	private void generateDocsFor(Set<Class<?>> classes, String filename) throws IOException {
+		File html = new File(instance.getDataFolder().getAbsolutePath() + File.separator + filename + ".html");
 		html.createNewFile();
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(html))) {
 			for (Class<?> e : classes) {
-				if (e.isAnnotationPresent(DocumentationHidden.class)) continue;
+				if (e.isAnnotationPresent(DocumentationHidden.class))
+					continue;
 				writer.write("<div class=\"column\">");
 				writer.newLine();
 				writer.write("<div id=\"" + e.getSimpleName() + "\" class=\"ui segment\">");
