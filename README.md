@@ -1,5 +1,5 @@
 SkQuery
-v3.6.3
+v3.6.4
 =======
 
 Changes:
@@ -12,6 +12,10 @@ Changes:
 - Added file existance condition file `[exist[(s|ance)] [at]] %string% or file %string% exists`
 - Removed some files that were not used
 - Removed lores, Skript 2.3+ has lores now.
+- Removed fireworks, I added them to Vanila Skript.
+- Removed SkQuery version expression, not needed.
+- Removed BookOf expression, Books are in Vanila Skript now.
+- Fixed 2.3 color issues
 - Fixed Yaml
 - Fixed getOnlinePlayers() crash
 - Fixed glowing itemtype
@@ -19,7 +23,6 @@ Changes:
 - Fixed the permission manager
 - Fixed a bunch of null pointers
 - Fixed Time Relative not being able to be reset
-- Fixed fireworks
 - Fixed pop firework effect but removed clientside ability. New syntax:
 ```
 (detonate|pop) %fireworkeffects% at %locations%
