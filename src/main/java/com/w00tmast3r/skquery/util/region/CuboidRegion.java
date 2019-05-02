@@ -15,14 +15,16 @@ public class CuboidRegion implements Iterable<Block> {
 	private int nextX, nextY, nextZ;
 
 	public CuboidRegion(Location pos1, Location pos2) {
-		this.nextX = min().getBlockX();
-		this.nextY = min().getBlockY();
-		this.nextZ = min().getBlockZ();
-		this.maxX = max().getBlockX();
-		this.maxY = max().getBlockY();
-		this.maxZ = max().getBlockZ();
 		this.pos1 = pos1;
 		this.pos2 = pos2;
+		Vector min = min();
+		this.nextX = min.getBlockX();
+		this.nextY = min.getBlockY();
+		this.nextZ = min.getBlockZ();
+		Vector max = max();
+		this.maxX = max.getBlockX();
+		this.maxY = max.getBlockY();
+		this.maxZ = max.getBlockZ();
 	}
 
 	@Override
@@ -71,11 +73,17 @@ public class CuboidRegion implements Iterable<Block> {
 	}
 
 	public Vector min() {
-		return new Vector(Math.min(pos1.getBlockX(), pos2.getBlockX()), Math.min(pos1.getBlockY(), pos2.getBlockY()), Math.min(pos1.getBlockZ(), pos2.getBlockZ()));
+		int x = Math.min(pos1.getBlockX(), pos2.getBlockX());
+		int y = Math.min(pos1.getBlockY(), pos2.getBlockY());
+		int z = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
+		return new Vector(x, y, z);
 	}
 
 	public Vector max() {
-		return new Vector(Math.max(pos1.getBlockX(), pos2.getBlockX()), Math.max(pos1.getBlockY(), pos2.getBlockY()), Math.max(pos1.getBlockZ(), pos2.getBlockZ()));
+		int x = Math.max(pos1.getBlockX(), pos2.getBlockX());
+		int y = Math.max(pos1.getBlockY(), pos2.getBlockY());
+		int z = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+		return new Vector(x, y, z);
 	}
 
 	public boolean checkHas(Vector pt) {

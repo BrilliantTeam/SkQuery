@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 public class CuboidIterator extends CheckedIterator<Block> {
-	
+
 	public CuboidIterator(Location pos1, Location pos2) {
 		super(new CuboidRegion(pos1, pos2).iterator(), new NullableChecker<Block>() {
 			@Override
