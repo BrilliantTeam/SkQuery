@@ -59,7 +59,7 @@ public class ExprTabCompletions extends SimpleExpression<String> {
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
         String node = delta[0] == null ? "" : (String) delta[0];
         AttachedTabCompleteEvent event = ((AttachedTabCompleteEvent) e);
-        if (node.startsWith(event.getArgs()[event.getArgs().length - 1])) {
+        if (node.toLowerCase().startsWith(event.getArgs()[event.getArgs().length - 1].toLowerCase())) {
             event.getResult().add(node);
         }
     }
