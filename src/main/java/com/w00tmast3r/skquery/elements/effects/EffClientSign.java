@@ -38,7 +38,7 @@ public class EffClientSign extends Effect {
 		line4 = (Expression<String>) expressions[5];
 		return true;
 	}
-	
+
 	@Override
 	protected void execute(Event event) {
 		String l1 = line1.getSingle(event);
@@ -47,12 +47,32 @@ public class EffClientSign extends Effect {
 		String l4 = line4.getSingle(event);
 		for (Block block : blocks.getArray(event)) {
 			Material material = block.getType();
-			if (material == Utils.materialAttempt("SIGN_POST", "SIGN") || material == Material.WALL_SIGN || material == Material.SIGN) {
-				for (Player player : players.getArray(event)){
-					player.sendSignChange(block.getLocation(), Collect.asArray(l1, l2, l3, l4));
-				}
-			}
+			if (!isSign(material))
+				continue;
+			for (Player player : players.getArray(event))
+				player.sendSignChange(block.getLocation(), Collect.asArray(l1, l2, l3, l4));
 		}
+	}
+
+	public boolean isSign(Material material) {
+		if (material == Utils.materialAttempt("SIGN_POST", "SIGN")) //1.8
+			return true;
+		Material older = Utils.materialAttempt("WALL_SIGN", "SIGN");
+		if (older != null && material == older) //1.9-1.12
+			return true;
+		if (material == Material.DARK_OAK_SIGN || material == Material.DARK_OAK_WALL_SIGN)
+			return true;
+		if (material == Material.SPRUCE_SIGN || material == Material.SPRUCE_WALL_SIGN)
+			return true;
+		if (material == Material.JUNGLE_SIGN || material == Material.JUNGLE_WALL_SIGN)
+			return true;
+		if (material == Material.ACACIA_SIGN || material == Material.ACACIA_WALL_SIGN)
+			return true;
+		if (material == Material.BIRCH_SIGN || material == Material.BIRCH_WALL_SIGN)
+			return true;
+		if (material == Material.OAK_SIGN || material == Material.OAK_WALL_SIGN)
+			return true;
+		return false;
 	}
 
 	@Override

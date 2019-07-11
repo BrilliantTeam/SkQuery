@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 
 import org.bukkit.Art;
 import org.bukkit.Sound;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -27,6 +28,7 @@ public class SimpleTypes extends AbstractTask {
 		EnumClassInfo.create(Sound.class, "sound").register();
 		EnumClassInfo.create(Art.class, "art").register();
 
+		TypeClassInfo.create(WorldBorder.class, "worldborder").register();
 		TypeClassInfo.create(ResultSet.class, "queryresult").register();
 	}
 

@@ -4,8 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayOutputStream;
@@ -165,7 +165,6 @@ public class Metrics {
 	 *
 	 * @return The plugin specific data.
 	 */
-	@SuppressWarnings("unchecked")
 	public JSONObject getPluginData() {
 		JSONObject data = new JSONObject();
 
@@ -181,7 +180,7 @@ public class Metrics {
 			if (chart == null) { // If the chart is null, we skip it
 				continue;
 			}
-			customCharts.add(chart);
+			customCharts.put(chart);
 		}
 		data.put("customCharts", customCharts);
 
@@ -193,7 +192,6 @@ public class Metrics {
 	 *
 	 * @return The server specific data.
 	 */
-	@SuppressWarnings("unchecked")
 	private JSONObject getServerData() {
 		// Minecraft specific data
 		int playerAmount = Bukkit.getOnlinePlayers().size();
@@ -228,7 +226,6 @@ public class Metrics {
 	/**
 	 * Collects the data and sends it afterwards.
 	 */
-	@SuppressWarnings("unchecked")
 	private void submitData() {
 		final JSONObject data = getServerData();
 
@@ -242,7 +239,7 @@ public class Metrics {
 			}
 			// Found one!
 			try {
-				pluginData.add(service.getMethod("getPluginData").invoke(Bukkit.getServicesManager().load(service)));
+				pluginData.put(service.getMethod("getPluginData").invoke(Bukkit.getServicesManager().load(service)));
 			} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) { }
 		}
 
@@ -340,7 +337,6 @@ public class Metrics {
 			this.chartId = chartId;
 		}
 
-		@SuppressWarnings("unchecked")
 		protected JSONObject getRequestJsonObject() {
 			JSONObject chart = new JSONObject();
 			chart.put("chartId", chartId);
@@ -385,7 +381,6 @@ public class Metrics {
 		 */
 		public abstract String getValue();
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -422,7 +417,6 @@ public class Metrics {
 		 */
 		public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -470,7 +464,6 @@ public class Metrics {
 		 */
 		public abstract int getValue();
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -508,7 +501,6 @@ public class Metrics {
 		 */
 		public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -559,7 +551,6 @@ public class Metrics {
 		 */
 		public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap);
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -571,7 +562,7 @@ public class Metrics {
 			}
 			for (Map.Entry<String, Integer> entry : map.entrySet()) {
 				JSONArray categoryValues = new JSONArray();
-				categoryValues.add(entry.getValue());
+				categoryValues.put(entry.getValue());
 				values.put(entry.getKey(), categoryValues);
 			}
 			data.put("values", values);
@@ -603,7 +594,6 @@ public class Metrics {
 		 */
 		public abstract HashMap<String, int[]> getValues(HashMap<String, int[]> valueMap);
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -621,7 +611,7 @@ public class Metrics {
 				allSkipped = false;
 				JSONArray categoryValues = new JSONArray();
 				for (int categoryValue : entry.getValue()) {
-					categoryValues.add(categoryValue);
+					categoryValues.put(categoryValue);
 				}
 				values.put(entry.getKey(), categoryValues);
 			}
@@ -656,7 +646,6 @@ public class Metrics {
 		 */
 		public abstract Country getValue();
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();
@@ -695,7 +684,6 @@ public class Metrics {
 		 */
 		public abstract HashMap<Country, Integer> getValues(HashMap<Country, Integer> valueMap);
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected JSONObject getChartData() {
 			JSONObject data = new JSONObject();

@@ -20,47 +20,49 @@ import java.util.List;
 @Patterns("[tab] (completions|suggestions)")
 public class ExprTabCompletions extends SimpleExpression<String> {
 
-    protected String[] get(Event e) {
-        List<String> completions = ((AttachedTabCompleteEvent) e).getResult();
-        return completions.toArray(new String[completions.size()]);
-    }
+	@Override
+	public Class<? extends String> getReturnType() {
+		return String.class;
+	}
 
-    @Override
-    public boolean isSingle() {
-        return false;
-    }
+	@Override
+	public boolean isSingle() {
+		return false;
+	}
 
-    @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
-    }
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		if (!ScriptLoader.isCurrentEvent(AttachedTabCompleteEvent.class)) {
+			Skript.error("Tab completers can only be accessed from tab complete events.", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public String toString(Event e, boolean debug) {
-        return "tab results";
-    }
+	protected String[] get(Event event) {
+		List<String> completions = ((AttachedTabCompleteEvent) event).getResult();
+		return completions.toArray(new String[completions.size()]);
+	}
 
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        if (!ScriptLoader.isCurrentEvent(AttachedTabCompleteEvent.class)) {
-            Skript.error("Tab completers can only be accessed from tab complete events.", ErrorQuality.SEMANTIC_ERROR);
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "tab results";
+	}
 
-    @Override
-    public Class<?>[] acceptChange(Changer.ChangeMode mode) {
-        if (mode == Changer.ChangeMode.ADD) return Collect.asArray(String.class);
-        return null;
-    }
+	@Override
+	public Class<?>[] acceptChange(Changer.ChangeMode mode) {
+		if (mode == Changer.ChangeMode.ADD)
+			return Collect.asArray(String.class);
+		return null;
+	}
 
-    @Override
-    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
-        String node = delta[0] == null ? "" : (String) delta[0];
-        AttachedTabCompleteEvent event = ((AttachedTabCompleteEvent) e);
-        if (node.toLowerCase().startsWith(event.getArgs()[event.getArgs().length - 1].toLowerCase())) {
-            event.getResult().add(node);
-        }
-    }
+	@Override
+	public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+		String node = delta[0] == null ? "" : (String) delta[0];
+		AttachedTabCompleteEvent event = ((AttachedTabCompleteEvent) e);
+		if (node.toLowerCase().startsWith(event.getArgs()[event.getArgs().length - 1].toLowerCase())) {
+			event.getResult().add(node);
+		}
+	}
+
 }

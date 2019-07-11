@@ -1,35 +1,23 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
-import ch.njol.skript.classes.Changer;
-import ch.njol.skript.classes.Changer.ChangeMode;
-import ch.njol.skript.expressions.base.SimplePropertyExpression;
-
-import com.w00tmast3r.skquery.api.PropertyFrom;
-import com.w00tmast3r.skquery.api.PropertyTo;
-import com.w00tmast3r.skquery.api.UsePropertyPatterns;
-import com.w00tmast3r.skquery.util.Collect;
-import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
-@UsePropertyPatterns
-@PropertyFrom("inventory")
-@PropertyTo("inventory (title|name)")
-public class ExprInventoryName extends SimplePropertyExpression<Inventory, String> {
+import com.w00tmast3r.skquery.api.Patterns;
+import ch.njol.skript.ScriptLoader;
+import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.log.ErrorQuality;
+import ch.njol.util.Kleenean;
+
+@Patterns("inventory (title|name)")
+public class ExprInventoryName extends SimpleExpression<String> {
 
 	@Override
-	protected String getPropertyName() {
-		return "inventory name";
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public String convert(Inventory inventory) {
-		return inventory.getTitle();
+	public boolean isSingle() {
+		return true;
 	}
 
 	@Override
@@ -38,27 +26,21 @@ public class ExprInventoryName extends SimplePropertyExpression<Inventory, Strin
 	}
 
 	@Override
-	public Class<?>[] acceptChange(Changer.ChangeMode mode) {
-		if (mode == Changer.ChangeMode.SET)
-			return Collect.asArray(String.class);
-		return null;
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+		if (!ScriptLoader.isCurrentEvent(InventoryClickEvent.class)) {
+			Skript.error("In 1.13+ you cannot get the title name of an inventory outside of an InventoryClickEvent, please only use 'Inventory Name' within the InventoryClickEvent `on inventory click`", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		return true;
+	}
+
+	protected String[] get(Event event) {
+		return new String[] {((InventoryClickEvent)event).getView().getTitle()};
 	}
 
 	@Override
-	public void change(Event event, Object[] delta, ChangeMode mode) {
-		String title = delta[0] == null ? "" : (String) delta[0];
-		for (Inventory inventory : getExpr().getArray(event)) {
-			if (inventory.getType() != InventoryType.CHEST)
-				continue;
-			Inventory copy = Bukkit.createInventory(inventory.getHolder(), inventory.getSize(), title);
-			inventory.getViewers().stream()
-					.filter(human -> human instanceof Player)
-					.map(human -> (Player) human)
-					.forEach(player -> {
-						FormattedSlotManager.exemptNextClose(player);
-						player.openInventory(copy);
-					});
-			copy.setContents(inventory.getContents());
-		}
+	public String toString(Event event, boolean debug) {
+		return "inventory name";
 	}
+
 }
