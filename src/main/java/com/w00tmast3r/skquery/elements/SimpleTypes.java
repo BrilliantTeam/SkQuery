@@ -8,6 +8,7 @@ import com.w00tmast3r.skquery.util.minecraft.MoonPhase;
 import java.sql.ResultSet;
 
 import org.bukkit.Art;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Villager;
@@ -25,6 +26,7 @@ public class SimpleTypes extends AbstractTask {
 		EnumClassInfo.create(InventoryType.class, "inventorytype").register();
 		EnumClassInfo.create(DisplaySlot.class, "displayslot").register();
 		EnumClassInfo.create(MoonPhase.class, "moonphase").register();
+		EnumClassInfo.create(Particle.class, "particle").register();
 		EnumClassInfo.create(Sound.class, "sound").register();
 		EnumClassInfo.create(Art.class, "art").register();
 

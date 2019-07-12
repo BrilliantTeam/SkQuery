@@ -16,12 +16,12 @@ import ch.njol.util.Kleenean;
 
 @Name("File existance")
 @Description("Checks whether or not a file at the defined path(s) exist.")
-@Patterns({"file %string% (1¦does|2¦does(n't| not)) exist", "existance of [file] %string% is %boolean%"})
+@Patterns({"file %string% (1¦does|2¦does(n't| not)) exist", "existance of [file] %string% is %boolean%"}) // Last syntax is to support Umbaska.
 public class CondFileExistance extends Condition {
-	
+
 	private Expression<Boolean> check;
 	private Expression<String> files;
-	
+
 	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
 		files = (Expression<String>) expressions[0];
@@ -39,7 +39,7 @@ public class CondFileExistance extends Condition {
 		File file = new File(files.getSingle(event));
 		return file.exists() ? negated : !negated;
 	}
-	
+
 	@Override
 	public String toString(@Nullable Event event, boolean debug) {
 		return "file existance" + files != null ? files.toString(event, debug) : "";

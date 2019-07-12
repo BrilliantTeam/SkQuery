@@ -1,5 +1,7 @@
 package com.w00tmast3r.skquery.elements.conditions;
 
+import ch.njol.skript.conditions.base.PropertyCondition;
+import ch.njol.skript.conditions.base.PropertyCondition.PropertyType;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -15,31 +17,29 @@ import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Entity has Potion")
 @Description("Checks whether or not an entity has a certain potion effect.")
-@Patterns({"%livingentity% (has|have) %potioneffecttype%","%livingentities% does(n't| not) (has|have) %potioneffecttype%"})
+@Patterns({"%livingentities% (has|have) [potion [effect]] %potioneffecttypes%","%livingentities% (doesn't|does not|do not|don't) have [potion [effect]] %potioneffecttypes%"})
 public class CondHasPotion extends Condition {
 
-	private Expression<LivingEntity> livingEntity;
-	private Expression<PotionEffectType> potion;
+	private Expression<PotionEffectType> effects;
+	private Expression<LivingEntity> entities;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		livingEntity = (Expression<LivingEntity>) expressions[0];
-		potion = (Expression<PotionEffectType>) expressions[1];
+		entities = (Expression<LivingEntity>) expressions[0];
+		effects = (Expression<PotionEffectType>) expressions[1];
 		setNegated(matchedPattern == 1);
 		return true;
 	}
-	
+
 	@Override
 	public boolean check(Event event) {
-		LivingEntity entity = livingEntity.getSingle(event);
-		PotionEffectType effect = potion.getSingle(event);
-		return !(entity == null || effect == null) && (isNegated() ? !entity.hasPotionEffect(effect) : entity.hasPotionEffect(effect));
+		return entities.check(event, entity -> effects.check(event, effect -> entity.hasPotionEffect(effect)), isNegated());
 	}
 
 	@Override
 	public String toString(Event event, boolean debug) {
-		return livingEntity.toString(event, debug) + " has potion " + potion.toString(event, debug);
+		return PropertyCondition.toString(this, PropertyType.HAVE, event, debug, entities, "effects " + effects.toString(event, debug));
 	}
 
 }

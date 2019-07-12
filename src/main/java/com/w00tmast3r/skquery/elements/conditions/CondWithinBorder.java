@@ -1,5 +1,7 @@
 package com.w00tmast3r.skquery.elements.conditions;
 
+import org.bukkit.Location;
+import org.bukkit.WorldBorder;
 import org.bukkit.event.Event;
 
 import com.w00tmast3r.skquery.api.Description;
@@ -13,39 +15,32 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
-@Name("Is Prime")
-@Description("Checks whether or not a number is prime.")
-@Patterns({"%numbers% (is|are) [a] prime [number]", "%numbers% (isn't|is not|aren't|are not) [a] prime [number]"})
-public class CondIsPrime extends Condition {
+@Name("Within Border")
+@Description("Checks whether or not a location is within the WorldBorder.")
+@Patterns({"%locations% is [with]in [world[ ]border[s]] %worldborder%", "%locations% (isn't|is not) [with]in [world[ ]border[s]] %worldborder%"})
+public class CondWithinBorder extends Condition {
 
-	private Expression<Number> numbers;
+	private Expression<WorldBorder> worldBorder;
+	private Expression<Location> locations;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		numbers = (Expression<Number>) expressions[0];
+		locations = (Expression<Location>) expressions[0];
+		worldBorder = (Expression<WorldBorder>) expressions[1];
 		setNegated(matchedPattern == 1);
 		return true;
 	}
 
 	@Override
 	public boolean check(Event event) {
-		return numbers.check(event, number -> isPrime(number.intValue()), isNegated());
+		WorldBorder border = worldBorder.getSingle(event);
+		return locations.check(event, location -> border.isInside(location), isNegated());
 	}
 
 	@Override
 	public String toString(Event event, boolean debug) {
-		return PropertyCondition.toString(this, PropertyType.BE, event, debug, numbers, "prime");
-	}
-
-	public static boolean isPrime(int number) {
-		if (number % 2 == 0)
-			return false;
-		for (int i = 3; i * i <= number; i += 2) {
-			if (number % i == 0)
-				return false;
-		}
-		return true;
+		return PropertyCondition.toString(this, PropertyType.CAN, event, debug, locations, " are within border " + worldBorder.toString(event, debug));
 	}
 
 }

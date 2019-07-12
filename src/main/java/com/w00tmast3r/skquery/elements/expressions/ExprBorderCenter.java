@@ -1,6 +1,6 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
-import org.bukkit.World;
+import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -14,13 +14,13 @@ import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 
 @UsePropertyPatterns
-@PropertyFrom("worlds")
-@PropertyTo("world[ ]border[s]")
-public class ExprWorldBorder extends SimplePropertyExpression<World, WorldBorder> {
+@PropertyFrom("worldborders")
+@PropertyTo("[world[ ]border[s]] center")
+public class ExprBorderCenter extends SimplePropertyExpression<WorldBorder, Location> {
 
 	@Override
-	public Class<? extends WorldBorder> getReturnType() {
-		return WorldBorder.class;
+	public Class<? extends Location> getReturnType() {
+		return Location.class;
 	}
 
 	@Override
@@ -30,21 +30,24 @@ public class ExprWorldBorder extends SimplePropertyExpression<World, WorldBorder
 
 	@Override
 	@Nullable
-	public WorldBorder convert(World world) {
-		return world.getWorldBorder();
+	public Location convert(WorldBorder border) {
+		return border.getCenter();
 	}
 
 	@Override
 	public Class<?>[] acceptChange(ChangeMode mode) {
-		if (mode == ChangeMode.RESET || mode == ChangeMode.DELETE)
-			return Collect.asArray(Object.class);
+		if (mode == ChangeMode.SET)
+			return Collect.asArray(Location.class);
 		return null;
 	}
 
 	@Override
 	public void change(Event event, Object[] delta, ChangeMode mode) {
-		for (World world : getExpr().getArray(event))
-			world.getWorldBorder().reset();
+		if (delta[0] == null)
+			return;
+		Location location = (Location) delta[0];
+		for (WorldBorder border : getExpr().getArray(event))
+			border.setCenter(location);
 	}
 
 }

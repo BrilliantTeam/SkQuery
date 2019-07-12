@@ -1,14 +1,13 @@
 package com.w00tmast3r.skquery.elements.conditions;
 
-import ch.njol.skript.lang.Condition;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.util.Checker;
-import ch.njol.util.Kleenean;
-
 import org.bukkit.event.Event;
 
 import com.w00tmast3r.skquery.api.Patterns;
+
+import ch.njol.skript.lang.Condition;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.util.Kleenean;
 
 @Patterns("%booleans%")
 public class CondBoolean extends Condition {
@@ -21,17 +20,12 @@ public class CondBoolean extends Condition {
 		condition = (Expression<Boolean>) expressions[0];
 		return true;
 	}
-	
+
 	@Override
 	public boolean check(Event event) {
-		return condition.check(event, new Checker<Boolean>() {
-			@Override
-			public boolean check(Boolean object) {
-				return object;
-			}
-		});
+		return condition.check(event, object -> object);
 	}
-	
+
 	@Override
 	public String toString(Event event, boolean debug) {
 		return "Boolean condition";

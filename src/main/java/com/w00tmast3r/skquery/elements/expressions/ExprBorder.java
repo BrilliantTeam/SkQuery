@@ -1,5 +1,6 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -13,40 +14,37 @@ import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 
 @UsePropertyPatterns
-@PropertyFrom("worldborders")
-@PropertyTo("[world[ ]border[s]] damage [amount]")
-public class ExprWorldBorderDamageAmount extends SimplePropertyExpression<WorldBorder, Number> {
+@PropertyFrom("worlds")
+@PropertyTo("world[ ]border[s]")
+public class ExprBorder extends SimplePropertyExpression<World, WorldBorder> {
 
 	@Override
-	public Class<? extends Number> getReturnType() {
-		return Number.class;
+	public Class<? extends WorldBorder> getReturnType() {
+		return WorldBorder.class;
 	}
 
 	@Override
 	protected String getPropertyName() {
-		return "damage";
+		return "world border";
 	}
 
 	@Override
 	@Nullable
-	public Number convert(WorldBorder border) {
-		return border.getDamageAmount();
+	public WorldBorder convert(World world) {
+		return world.getWorldBorder();
 	}
 
 	@Override
 	public Class<?>[] acceptChange(ChangeMode mode) {
-		if (mode == ChangeMode.SET)
-			return Collect.asArray(Number.class);
+		if (mode == ChangeMode.RESET || mode == ChangeMode.DELETE)
+			return Collect.asArray(Object.class);
 		return null;
 	}
 
 	@Override
 	public void change(Event event, Object[] delta, ChangeMode mode) {
-		if (delta[0] == null)
-			return;
-		Number amount = (Number) delta[0];
-		for (WorldBorder border : getExpr().getArray(event))
-			border.setDamageAmount(amount.doubleValue());
+		for (World world : getExpr().getArray(event))
+			world.getWorldBorder().reset();
 	}
 
 }

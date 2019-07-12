@@ -1,6 +1,5 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
-import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -15,29 +14,29 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 
 @UsePropertyPatterns
 @PropertyFrom("worldborders")
-@PropertyTo("[world[ ]border[s]] center")
-public class ExprWorldBorderCenter extends SimplePropertyExpression<WorldBorder, Location> {
+@PropertyTo("[world[ ]border[s]] [damage] buffer")
+public class ExprBorderDamageBuffer extends SimplePropertyExpression<WorldBorder, Number> {
 
 	@Override
-	public Class<? extends Location> getReturnType() {
-		return Location.class;
+	public Class<? extends Number> getReturnType() {
+		return Number.class;
 	}
 
 	@Override
 	protected String getPropertyName() {
-		return "world border";
+		return "buffer";
 	}
 
 	@Override
 	@Nullable
-	public Location convert(WorldBorder border) {
-		return border.getCenter();
+	public Number convert(WorldBorder border) {
+		return border.getDamageBuffer();
 	}
 
 	@Override
 	public Class<?>[] acceptChange(ChangeMode mode) {
 		if (mode == ChangeMode.SET)
-			return Collect.asArray(Location.class);
+			return Collect.asArray(Number.class);
 		return null;
 	}
 
@@ -45,9 +44,9 @@ public class ExprWorldBorderCenter extends SimplePropertyExpression<WorldBorder,
 	public void change(Event event, Object[] delta, ChangeMode mode) {
 		if (delta[0] == null)
 			return;
-		Location location = (Location) delta[0];
+		Number amount = (Number) delta[0];
 		for (WorldBorder border : getExpr().getArray(event))
-			border.setCenter(location);
+			border.setDamageBuffer(amount.doubleValue());
 	}
 
 }

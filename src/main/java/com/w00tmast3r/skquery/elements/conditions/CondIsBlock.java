@@ -1,6 +1,8 @@
 package com.w00tmast3r.skquery.elements.conditions;
 
 import ch.njol.skript.aliases.ItemType;
+import ch.njol.skript.conditions.base.PropertyCondition;
+import ch.njol.skript.conditions.base.PropertyCondition.PropertyType;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -14,7 +16,7 @@ import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Is Block")
 @Description("Checks whether or not a certain itemtype is a placeable block.")
-@Patterns({"%itemtype% is [a] block", "%itemtype% (isn't|is not) not [a] block"})
+@Patterns({"%itemtype% is [a] block", "%itemtype% (isn't|is not) [a] block"})
 public class CondIsBlock extends Condition {
 
 	private Expression<ItemType> itemtype;
@@ -34,7 +36,7 @@ public class CondIsBlock extends Condition {
 
 	@Override
 	public String toString(Event event, boolean debug) {
-		return itemtype.toString(event, debug) + " is a block";
+		return PropertyCondition.toString(this, PropertyType.BE, event, debug, itemtype, "block");
 	}
 
 }
