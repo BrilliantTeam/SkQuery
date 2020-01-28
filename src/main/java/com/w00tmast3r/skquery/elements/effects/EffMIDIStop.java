@@ -19,30 +19,31 @@ import org.bukkit.event.Event;
 		"	play midi \"login\" to player",
 		"	wait 5 seconds",
 		"	stop midi \"login\""})
-@Patterns("stop midi [id] %string%")
+@Patterns("stop midi[s] [[with] id] %strings%")
 public class EffMIDIStop extends Effect {
 
-	private Expression<String> ID;
+	private Expression<String> IDs;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expressions, int markedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-		ID = (Expression<String>) expressions[0];
+		IDs = (Expression<String>) expressions[0];
 		return true;
 	}
 	
 	@Override
 	protected void execute(Event event) {
-		String track = ID.getSingle(event);
-		if (track == null)
-			return;
-		if (MidiUtil.isPlaying(track))
-			MidiUtil.stop(track);
+		for (String track : IDs.getArray(event)) {
+			if (track == null)
+				continue;
+			if (MidiUtil.isPlaying(track))
+				MidiUtil.stop(track);
+		}
 	}
 
 	@Override
 	public String toString(Event event, boolean debug) {
-		return "stop midi " + ID.toString(event, debug);
+		return "stop midi " + IDs.toString(event, debug);
 	}
 
 }

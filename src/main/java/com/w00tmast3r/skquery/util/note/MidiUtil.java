@@ -17,9 +17,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 public class MidiUtil {
-	
+
 	private static HashMap<String, Sequencer> playing = new HashMap<>();
-	
+
 	private static void playMidi(Sequence sequence, float tempo, String ID, Player... listeners) {
 		try {
 			Sequencer sequencer = MidiSystem.getSequencer(false);
@@ -36,7 +36,7 @@ public class MidiUtil {
 			Skript.exception(e, "Error attempting to play a midi file");
 		}
 	}
-	
+
 	public static void playMidi(File file, float tempo, String ID, Player... listeners) throws InvalidMidiDataException, IOException {
 		playMidi(MidiSystem.getSequence(file), tempo, ID, listeners);
 	}
@@ -48,7 +48,7 @@ public class MidiUtil {
 	public static void playMidiQuietly(File file, float tempo, String ID, Player... listeners) throws InvalidMidiDataException, IOException {
 		playMidi(file, tempo, ID, listeners);
 	}
-	
+
 	public static void playMidiQuietly(InputStream stream, float tempo, String ID, Player... listeners) throws InvalidMidiDataException, IOException {
 		playMidi(stream, tempo, ID, listeners);
 	}
@@ -60,11 +60,11 @@ public class MidiUtil {
 	public static void playMidiQuietly(InputStream stream, String ID, Player... listeners) throws InvalidMidiDataException, IOException {
 		playMidiQuietly(stream, 1.0f, ID, listeners);
 	}
-	
+
 	public static boolean isPlaying(String ID) {
 		return playing.containsKey(ID);
 	}
-	
+
 	public static void stop(String ID) {
 		String id = ID.toLowerCase();
 		if (playing.containsKey(id)) {
@@ -79,52 +79,49 @@ public class MidiUtil {
 	}
 
 	// provided by github.com/sk89q/craftbook
-	private static final int[] instruments = {
-			0, 0, 0, 0, 0, 0, 0, 5, // 8
-			9, 9, 9, 9, 9, 6, 0, 9, // 16
-			9, 0, 0, 0, 0, 0, 0, 5, // 24
-			5, 5, 5, 5, 5, 5, 5, 1, // 32
-			1, 1, 1, 1, 1, 1, 1, 5, // 40
-			1, 5, 5, 5, 5, 5, 5, 5, // 48
-			5, 5, 5, 8, 8, 8, 8, 8, // 56
-			8, 8, 8, 8, 8, 8, 8, 8, // 64
-			8, 8, 8, 8, 8, 8, 8, 8, // 72
-			8, 8, 8, 8, 8, 8, 8, 8, // 80
-			0, 0, 0, 0, 0, 0, 0, 0, // 88
-			0, 0, 0, 0, 0, 0, 0, 0, // 96
-			0, 0, 0, 0, 0, 0, 0, 5, // 104
-			5, 5, 5, 9, 8, 5, 8, 6, // 112
-			6, 3, 3, 2, 2, 2, 6, 5, // 120
-			1, 1, 1, 6, 1, 2, 4, 7, // 128
-	};
-	
-	private static final int[] percussion = {
+
+	private static final byte[] instruments = {
+            0, 0, 0, 0, 0, 0, 0,11, // 0-7
+            6, 6, 6, 6, 9, 9,15,11, // 8-15
+            10,5, 5,10,10,10,10,10, // 16-23
+            5, 5, 5, 5, 5, 5, 5, 5, // 24-31
+            1, 1, 1, 1, 1, 1, 1, 1, // 32-39
+            0,10,10, 1, 0, 0, 0, 4, // 40-47
+            0, 0, 0, 0, 8, 8, 8,12, // 48-55
+            8,14,14,14,14,14, 8, 8, // 56-63
+            8, 8, 8,14,14, 8, 8, 8, // 64-71
+            8, 8, 8, 8,14, 8, 8, 8, // 72-79
+            8,14, 8, 8, 5, 8,12, 1, // 80-87
+            1, 0, 0, 8, 0, 0, 0, 0, // 88-95
+            0, 0, 7, 0, 0, 0, 0,12, // 96-103
+            11,11,3, 3, 3,14,10, 6, // 104-111
+            6, 3, 3, 2, 2, 2, 6, 5, // 112-119
+            1, 1, 1,13,13, 2, 4, 7, // 120-127
+    };
+
+	private static final byte[] percussion = {
 			9, 6, 4, 4, 3, 2, 3, 2, //40 - Electric Snare
 			2, 2, 2, 2, 2, 2, 2, 2, //48 - Hi Mid Tom
 			7, 2, 7, 7, 6, 3, 7, 6, //56 - Cowbell
 			7, 3, 7, 2, 2, 3, 3, 3, //64 - Low Conga
 			2, 2, 6, 6, 2, 2, 0, 0, //72 - Long Whistle
 			3, 3, 3, 3, 3, 3, 5, 5, //80 - Open Cuica
-			10, 10,				    //82 - Open Triangle
+			15, 15,				    //82 - Open Triangle
 	};
-	
-	private static byte bytePercussion(Integer patch) {
-		if (patch == null)
-			return 0;
+
+	private static byte bytePercussion(int patch) {
 		int i = patch - 33;
 		if (i < 0 || i >= percussion.length)
 			return 1;
 		return (byte) percussion[i];
-}
-	
-	private static byte byteInstrument(Integer patch) {
-		if (patch == null)
-			return 0;
+	}
+
+	private static byte byteInstrument(int patch) {
 		if (patch < 0 || patch >= instruments.length)
 			return 0;
 		return (byte) instruments[patch];
 	}
-	
+
 	public static Sound patchToPercussion(int patch) {
 		return Instrument.fromByte(bytePercussion(patch)).getSound();
 	}

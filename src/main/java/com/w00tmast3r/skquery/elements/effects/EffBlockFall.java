@@ -1,5 +1,6 @@
 package com.w00tmast3r.skquery.elements.effects;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.effects.EffSpawn;
 import ch.njol.skript.lang.Effect;
@@ -14,11 +15,15 @@ import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Reflection;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
 import java.lang.reflect.InvocationTargetException;
 
+@SuppressWarnings("deprecation")
 @Name("Spawn Falling Block")
 @Description("Summons falling blocks with modifiable properties.")
 @Examples({"on place of dirt:",
@@ -52,7 +57,11 @@ public class EffBlockFall extends Effect {
 			return;
 		for (Location location : locations.getArray(event)) {
 			for (ItemStack itemstack : item.getAll()) {
-				FallingBlock block = location.getWorld().spawnFallingBlock(location, itemstack.getType().createBlockData());
+				FallingBlock block = null;
+				if (!Skript.methodExists(Material.class, "createBlockData"))
+					block = location.getWorld().spawnFallingBlock(location, new MaterialData(itemstack.getType(), (byte) itemstack.getDurability()));
+				else
+					block = location.getWorld().spawnFallingBlock(location, itemstack.getType().createBlockData());
 				EffSpawn.lastSpawned = block;
 				if (damages) {
 					try {

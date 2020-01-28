@@ -43,7 +43,7 @@ public class EffMIDI extends Effect {
 		url = matchedPattern == 1;
 		return true;
 	}
-	
+
 	@Override
 	protected void execute(Event event) {
 		String track = midi.getSingle(event);

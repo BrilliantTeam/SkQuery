@@ -1,26 +1,26 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.WorldBorder;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.w00tmast3r.skquery.api.PropertyFrom;
-import com.w00tmast3r.skquery.api.PropertyTo;
-import com.w00tmast3r.skquery.api.UsePropertyPatterns;
+import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 
 import ch.njol.skript.classes.Changer.ChangeMode;
-import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.util.Timespan;
 import ch.njol.util.Kleenean;
 
-@UsePropertyPatterns
-@PropertyFrom("worldborders")
-@PropertyTo("[world[ ]border[s]] (size|diameter) [over [a [(time|period) of]] %-timespan%]")
-public class ExprBorderSize extends PropertyExpression<WorldBorder, Number> {
+@Patterns("(size|diameter) of world[ ]border[s] %worldborders% [over [a [(time|period) of]] %-timespan%]")
+public class ExprBorderSize extends SimpleExpression<Number> {
 
+	private Expression<WorldBorder> borders;
 	private Expression<Timespan> timespan;
 
 	@Override
@@ -28,22 +28,31 @@ public class ExprBorderSize extends PropertyExpression<WorldBorder, Number> {
 		return Number.class;
 	}
 
+	@Override
+	public boolean isSingle() {
+		return borders.isSingle();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		setExpr((Expression<WorldBorder>) exprs[1 - matchedPattern]);
-		timespan = (Expression<Timespan>) exprs[matchedPattern];
+		borders = (Expression<WorldBorder>) exprs[0];
+		timespan = (Expression<Timespan>) exprs[1];
 		return true;
 	}
 
 	@Override
-	protected Number[] get(Event event, WorldBorder[] source) {
-		return get(source, border -> border.getSize());
+	@Nullable
+	protected Number[] get(Event event) {
+		List<Number> sizes = new ArrayList<>();
+		for (WorldBorder border : borders.getArray(event))
+			sizes.add(border.getSize());
+		return sizes.toArray(new Number[sizes.size()]);
 	}
 
 	@Override
 	public String toString(@Nullable Event event, boolean debug) {
-		return "size of world borders " + getExpr().toString(event, debug) + " over time " + timespan.toString(event, debug);
+		return "size of world borders " + borders.toString(event, debug) + " over time " + timespan.toString(event, debug);
 	}
 
 	@Override
@@ -62,7 +71,7 @@ public class ExprBorderSize extends PropertyExpression<WorldBorder, Number> {
 		long milliseconds = time == null ? -1L : time.getMilliSeconds() / 1000L;
 		switch (mode) {
 			case SET:
-				for (WorldBorder border : getExpr().getArray(event)) {
+				for (WorldBorder border : borders.getArray(event)) {
 					if (milliseconds == -1L)
 						border.setSize(amount);
 					else
@@ -70,7 +79,7 @@ public class ExprBorderSize extends PropertyExpression<WorldBorder, Number> {
 				}
 				break;
 			case ADD:
-				for (WorldBorder border : getExpr().getArray(event)) {
+				for (WorldBorder border : borders.getArray(event)) {
 					double size = border.getSize();
 					if (milliseconds == -1L)
 						border.setSize(size + amount);
@@ -79,7 +88,7 @@ public class ExprBorderSize extends PropertyExpression<WorldBorder, Number> {
 				}
 				break;
 			case REMOVE:
-				for (WorldBorder border : getExpr().getArray(event)) {
+				for (WorldBorder border : borders.getArray(event)) {
 					double size = border.getSize();
 					if (milliseconds == -1L)
 						border.setSize(size - amount);

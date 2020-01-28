@@ -35,8 +35,8 @@ public class NoteBlockReceiver implements Receiver {
 					break;
 				case ShortMessage.NOTE_ON:
 					float volume = VOLUME_RANGE * (message.getData2() / 127.0f);
-					float pitch = (float) ToneUtil.midiToPitch(message);
-					Sound instrument = Instrument.PLING.getSound();
+					float pitch = getNote(toMCNote(message.getData1()));
+					Sound instrument = Instrument.PIANO.getSound();
 					Optional<Integer> optional = Optional.ofNullable(patches.get(message.getChannel()));
 					if (optional.isPresent()) {
 						if (channel == 9) {
@@ -54,6 +54,19 @@ public class NoteBlockReceiver implements Receiver {
 			}
 		}
 	}
+
+	public float getNote(byte note) {
+		return (float) Math.pow(2.0D, (note - 12) / 12.0D);
+	}
+
+	private byte toMCNote(int n) {
+        if (n < 54)
+        	return (byte) ((n - 6) % (18 - 6));
+        else if (n > 78)
+        	return (byte) ((n - 6) % (18 - 6) + 12);
+        else
+        	return (byte) (n - 54);
+    }
 
 	@Override
 	public void close() {
