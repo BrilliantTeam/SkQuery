@@ -8,6 +8,7 @@ Changes:
 - Added tempo option to midi syntax `play midi %string% to %players% [at [tempo] %-number%]`
 - Added play midi from web link syntax `play midi from [(web[site]|link)] %string% to %players% [at [tempo] %-number%]`
 - Added stop for midi files `stop midi [id] %string%`
+- Updated the midi player for the new sounds.
 - Removed broken MySQL support (Might add my own methods later) You can use Skellett until then. Example and Example.
 - Added file existance condition file `[exist[(s|ance)] [at]] %string% or file %string% exists`
 - Removed some files that were not used
