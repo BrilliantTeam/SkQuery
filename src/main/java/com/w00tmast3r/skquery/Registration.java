@@ -58,7 +58,7 @@ public class Registration {
 							}
 						} catch (ClassNotFoundException error) {
 							error.printStackTrace();
-						} catch (NoClassDefFoundError | ExceptionInInitializerError ignored) {
+						} catch (NoClassDefFoundError | ExceptionInInitializerError | IllegalAccessError ignored) {
 						}
 					}
 				}

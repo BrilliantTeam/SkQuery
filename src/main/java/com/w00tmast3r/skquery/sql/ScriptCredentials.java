@@ -5,11 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ScriptCredentials {
 
-	private static HashMap<File, ScriptCredentials> credentials = new HashMap<>();
-	private HashMap<String, Connection> connection = new HashMap<>();
+	private static Map<File, ScriptCredentials> credentials = new HashMap<>();
+	private Map<String, Connection> connection = new HashMap<>();
 	public static String currentPool = "default";
 	private String url, username, password;
 
@@ -44,10 +45,11 @@ public class ScriptCredentials {
 	}
 
 	public static ScriptCredentials get(File script, String pool) {
-		if (!credentials.containsKey(script)) credentials.put(script, new ScriptCredentials());
+		if (!credentials.containsKey(script))
+			credentials.put(script, new ScriptCredentials());
 		ScriptCredentials c = credentials.get(script);
 		try {
-			if (c.connection != null && !c.connection.containsKey(pool) && !c.connection.get(pool).isValid(1)) {
+			if (c.connection != null && (!c.connection.containsKey(pool) || !c.connection.get(pool).isValid(1))) {
 				 c.validate(pool);
 			}
 		} catch (SQLException e) {
