@@ -2,6 +2,7 @@ package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.effects.EffSpawn;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -10,7 +11,6 @@ import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.api.Description;
 import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Reflection;
 

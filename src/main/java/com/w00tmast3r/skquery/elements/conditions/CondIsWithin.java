@@ -1,5 +1,6 @@
 package com.w00tmast3r.skquery.elements.conditions;
 
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -7,7 +8,6 @@ import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.region.CuboidRegion;
 

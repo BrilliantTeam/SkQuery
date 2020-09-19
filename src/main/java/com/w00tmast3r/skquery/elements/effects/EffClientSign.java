@@ -1,5 +1,6 @@
 package com.w00tmast3r.skquery.elements.effects;
 
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -7,7 +8,6 @@ import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.api.Description;
 import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 import com.w00tmast3r.skquery.util.minecraft.Utils;

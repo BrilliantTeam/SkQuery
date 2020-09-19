@@ -1,6 +1,7 @@
 package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.aliases.ItemType;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +11,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
 import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 
 @Name("Set Block Without Updates")

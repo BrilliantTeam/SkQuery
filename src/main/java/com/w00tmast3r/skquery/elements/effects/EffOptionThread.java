@@ -1,10 +1,10 @@
 package com.w00tmast3r.skquery.elements.effects;
 
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.TriggerItem;
 import com.w00tmast3r.skquery.SkQuery;
 import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Name;
 import com.w00tmast3r.skquery.api.Patterns;
 import com.w00tmast3r.skquery.elements.effects.base.Pragma;
 import com.w00tmast3r.skquery.util.CancellableBukkitTask;
