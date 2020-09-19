@@ -8,7 +8,7 @@ import ch.njol.util.Kleenean;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 
 @Patterns("send [(resource|texture)] pack from %string% to %players%")

@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Examples;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Client Block")
 @Description("Make a player see a block as another type of block. If the client recieves an update to the block, it will revert.")

@@ -6,7 +6,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.projectile.ItemProjectile;
 
 import org.bukkit.entity.LivingEntity;

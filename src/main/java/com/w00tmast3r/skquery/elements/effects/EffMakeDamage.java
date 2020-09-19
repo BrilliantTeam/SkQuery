@@ -10,9 +10,9 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Examples;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Make Damage")
 @Description("Cause entities to damage each other. If you cause hostile mobs to attack or be attacked, they will become aggroed on the last entity that they hit or got hit by.")

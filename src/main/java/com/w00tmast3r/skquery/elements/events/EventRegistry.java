@@ -4,7 +4,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 
 import com.w00tmast3r.skquery.SkQuery;
-import com.w00tmast3r.skquery.api.AbstractTask;
+import com.w00tmast3r.skquery.annotations.AbstractTask;
 import com.w00tmast3r.skquery.elements.events.bukkit.AttachedTabCompleteEvent;
 import com.w00tmast3r.skquery.elements.events.lang.*;
 import com.w00tmast3r.skquery.util.projectile.ItemProjectileHitEvent;

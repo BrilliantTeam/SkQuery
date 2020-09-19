@@ -13,9 +13,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.w00tmast3r.skquery.api.PropertyFrom;
-import com.w00tmast3r.skquery.api.PropertyTo;
-import com.w00tmast3r.skquery.api.UsePropertyPatterns;
+import com.w00tmast3r.skquery.annotations.PropertyFrom;
+import com.w00tmast3r.skquery.annotations.PropertyTo;
+import com.w00tmast3r.skquery.annotations.UsePropertyPatterns;
 import com.w00tmast3r.skquery.util.Collect;
 import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
 

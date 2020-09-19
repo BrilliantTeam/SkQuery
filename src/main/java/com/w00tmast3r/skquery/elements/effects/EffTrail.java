@@ -8,8 +8,8 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.w00tmast3r.skquery.SkQuery;
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;

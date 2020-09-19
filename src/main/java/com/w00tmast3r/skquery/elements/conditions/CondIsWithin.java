@@ -7,8 +7,8 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.region.CuboidRegion;
 
 import org.bukkit.Location;

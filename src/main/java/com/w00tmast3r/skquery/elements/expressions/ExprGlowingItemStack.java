@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Patterns("[skquery] glowing %itemstacks%")
 public class ExprGlowingItemStack extends SimplePropertyExpression<ItemStack, ItemStack> {

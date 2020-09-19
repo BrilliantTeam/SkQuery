@@ -1,4 +1,4 @@
-package com.w00tmast3r.skquery.api;
+package com.w00tmast3r.skquery.annotations;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.SkriptEvent;
@@ -19,5 +19,4 @@ public abstract class AbstractTask implements Runnable {
 		Documentation.addEvent(event, patterns);
 		Skript.registerEvent(name, handler, event, patterns);
 	}
-
 }

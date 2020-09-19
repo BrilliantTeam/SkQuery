@@ -12,8 +12,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 import org.bukkit.potion.PotionEffectType;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Entity has Potion")
 @Description("Checks whether or not an entity has a certain potion effect.")

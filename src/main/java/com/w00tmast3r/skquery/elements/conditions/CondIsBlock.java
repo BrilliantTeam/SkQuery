@@ -11,8 +11,8 @@ import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Is Block")
 @Description("Checks whether or not a certain itemtype is a placeable block.")

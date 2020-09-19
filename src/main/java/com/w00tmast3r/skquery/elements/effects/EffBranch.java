@@ -9,9 +9,9 @@ import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Examples;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Branch")
 @Description("Execute the following code X times. Useful for testing probabilities without requiring a loop and indentation.")

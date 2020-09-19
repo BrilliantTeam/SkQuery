@@ -4,9 +4,9 @@ import org.bukkit.WorldBorder;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.w00tmast3r.skquery.api.PropertyFrom;
-import com.w00tmast3r.skquery.api.PropertyTo;
-import com.w00tmast3r.skquery.api.UsePropertyPatterns;
+import com.w00tmast3r.skquery.annotations.PropertyFrom;
+import com.w00tmast3r.skquery.annotations.PropertyTo;
+import com.w00tmast3r.skquery.annotations.UsePropertyPatterns;
 import com.w00tmast3r.skquery.util.Collect;
 
 import ch.njol.skript.classes.Changer.ChangeMode;

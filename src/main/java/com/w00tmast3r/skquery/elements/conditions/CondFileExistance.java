@@ -5,7 +5,7 @@ import java.io.File;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Name;

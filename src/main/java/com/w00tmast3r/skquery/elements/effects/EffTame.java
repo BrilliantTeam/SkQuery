@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;

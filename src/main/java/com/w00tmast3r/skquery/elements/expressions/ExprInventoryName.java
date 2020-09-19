@@ -3,7 +3,8 @@ package com.w00tmast3r.skquery.elements.expressions;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
+
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;

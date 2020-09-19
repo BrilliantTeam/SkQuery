@@ -1,6 +1,6 @@
 package com.w00tmast3r.skquery.elements;
 
-import com.w00tmast3r.skquery.api.AbstractTask;
+import com.w00tmast3r.skquery.annotations.AbstractTask;
 import com.w00tmast3r.skquery.skript.EnumClassInfo;
 import com.w00tmast3r.skquery.skript.TypeClassInfo;
 import com.w00tmast3r.skquery.util.minecraft.MoonPhase;

@@ -8,7 +8,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.util.Kleenean;
 
-import com.w00tmast3r.skquery.api.Disabled;
+import com.w00tmast3r.skquery.annotations.Disabled;
 import com.w00tmast3r.skquery.elements.events.lang.CustomPropertyExpressionEvent;
 import com.w00tmast3r.skquery.util.BiValue;
 

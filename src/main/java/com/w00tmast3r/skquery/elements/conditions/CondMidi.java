@@ -9,8 +9,8 @@ import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.note.MidiUtil;
 
 @Name("Midi is playing")

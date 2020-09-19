@@ -10,9 +10,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Examples;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Leash Entities")
 @Description("Cause multiple entities to leash other entities.")

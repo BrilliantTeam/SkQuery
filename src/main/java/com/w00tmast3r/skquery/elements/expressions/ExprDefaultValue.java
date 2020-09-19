@@ -10,7 +10,7 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 
 import org.bukkit.event.Event;

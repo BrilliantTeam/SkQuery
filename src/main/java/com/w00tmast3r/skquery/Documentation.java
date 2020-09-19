@@ -5,13 +5,13 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.DocumentationHidden;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Patterns;
-import com.w00tmast3r.skquery.api.PropertyFrom;
-import com.w00tmast3r.skquery.api.PropertyTo;
-import com.w00tmast3r.skquery.api.UsePropertyPatterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.DocumentationHidden;
+import com.w00tmast3r.skquery.annotations.Examples;
+import com.w00tmast3r.skquery.annotations.Patterns;
+import com.w00tmast3r.skquery.annotations.PropertyFrom;
+import com.w00tmast3r.skquery.annotations.PropertyTo;
+import com.w00tmast3r.skquery.annotations.UsePropertyPatterns;
 import com.w00tmast3r.skquery.util.Reflection;
 import com.w00tmast3r.skquery.util.SkQueryInternalException;
 

@@ -10,7 +10,8 @@ import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.yggdrasil.Fields;
-import com.w00tmast3r.skquery.api.AbstractTask;
+
+import com.w00tmast3r.skquery.annotations.AbstractTask;
 import com.w00tmast3r.skquery.skript.LambdaCondition;
 import com.w00tmast3r.skquery.skript.LambdaEffect;
 import com.w00tmast3r.skquery.skript.Markup;

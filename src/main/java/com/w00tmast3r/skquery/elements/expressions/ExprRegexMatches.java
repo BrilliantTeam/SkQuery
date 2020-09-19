@@ -7,7 +7,7 @@ import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

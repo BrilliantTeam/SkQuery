@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;

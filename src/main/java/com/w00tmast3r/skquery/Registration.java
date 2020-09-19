@@ -6,7 +6,8 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
-import com.w00tmast3r.skquery.api.*;
+
+import com.w00tmast3r.skquery.annotations.*;
 import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
 import com.w00tmast3r.skquery.elements.effects.base.Pragma;
 import com.w00tmast3r.skquery.util.IterableEnumeration;

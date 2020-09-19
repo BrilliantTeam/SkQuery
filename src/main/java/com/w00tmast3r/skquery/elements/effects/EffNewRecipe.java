@@ -13,8 +13,8 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 @Name("Register Recipe")
 @Description("Register a crafting recipe. Use air as an itemtype to indicate the slot is not used. All 9 itemtypes must be present.")

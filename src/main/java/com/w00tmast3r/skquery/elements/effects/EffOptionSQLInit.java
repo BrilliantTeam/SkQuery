@@ -5,9 +5,9 @@ import ch.njol.skript.lang.SkriptParser;
 
 import java.io.File;
 
-import com.w00tmast3r.skquery.api.Description;
-import com.w00tmast3r.skquery.api.Examples;
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Description;
+import com.w00tmast3r.skquery.annotations.Examples;
+import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
 
 @Name("Preinit Driver Option")

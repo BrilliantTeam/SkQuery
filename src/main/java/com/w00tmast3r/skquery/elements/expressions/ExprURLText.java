@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
-import com.w00tmast3r.skquery.api.Patterns;
+import com.w00tmast3r.skquery.annotations.Patterns;
 
 
 @Patterns("text from [url] %string%")
