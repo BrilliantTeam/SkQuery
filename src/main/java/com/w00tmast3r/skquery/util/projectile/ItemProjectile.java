@@ -1,34 +1,32 @@
 package com.w00tmast3r.skquery.util.projectile;
 
-import com.w00tmast3r.skquery.SkQuery;
-import com.w00tmast3r.skquery.util.CancellableBukkitTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import com.w00tmast3r.skquery.SkQuery;
+import com.w00tmast3r.skquery.util.CancellableBukkitTask;
+
+import ch.njol.skript.aliases.ItemType;
 
 public class ItemProjectile {
 
-	private ItemStack projectile;
+	private final ItemType projectile;
 
-	public ItemProjectile(ItemStack projectile) {
+	public ItemProjectile(ItemType projectile) {
 		this.projectile = projectile;
 	}
 
-	public ItemStack getProjectile() {
+	public ItemType getProjectile() {
 		return projectile;
 	}
 
-	public void setProjectile(ItemStack projectile) {
-		this.projectile = projectile;
-	}
-
 	public ItemProjectile shoot(LivingEntity shooter, Vector velocity) {
-		Item item = shooter.getWorld().dropItem(shooter.getEyeLocation(), projectile);
+		Item item = shooter.getWorld().dropItem(shooter.getEyeLocation(), projectile.getRandom());
 		item.setVelocity(velocity);
 		item.setPickupDelay(Integer.MAX_VALUE);
-		CancellableBukkitTask taskBukkit = new CancellableBukkitTask() {
+		CancellableBukkitTask task = new CancellableBukkitTask() {
 			@Override
 			public void run() {
 				if (!item.isValid() || (item.getNearbyEntities(0, 0, 0).size() != 0 && !item.getNearbyEntities(0, 0, 0).contains(shooter)) || item.isOnGround()) {
@@ -38,7 +36,7 @@ public class ItemProjectile {
 				}
 			}
 		};
-		taskBukkit.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(SkQuery.getInstance(), taskBukkit, 0, 1));
+		task.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(SkQuery.getInstance(), task, 0, 1));
 		return this;
 	}
 

@@ -1,5 +1,6 @@
 package com.w00tmast3r.skquery.elements.events;
 
+import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 
@@ -70,15 +71,11 @@ public class EventRegistry extends AbstractTask {
 
         registerEvent("Server Ping", ServerListPingEvent.class, "[server] [list] ping");
 
-        registerEvent("*Subroutine", EvtCustom.class, RoutineEvent.class, "sub[routine] %string%");
-
-        registerEvent("*Function", EvtCustom.class, FunctionEvent.class, "func[tion] %string%");
-
         registerEvent("Item Projectile Hit", ItemProjectileHitEvent.class, "item [projectile] hit");
-        EventValues.registerEventValue(ItemProjectileHitEvent.class, ItemStack.class, new Getter<ItemStack, ItemProjectileHitEvent>() {
+        EventValues.registerEventValue(ItemProjectileHitEvent.class, ItemType.class, new Getter<ItemType, ItemProjectileHitEvent>() {
             @Override
-            public ItemStack get(ItemProjectileHitEvent itemProjectileHitEvent) {
-                return itemProjectileHitEvent.getProjectile().getItemStack();
+            public ItemType get(ItemProjectileHitEvent itemProjectileHitEvent) {
+                return new ItemType(itemProjectileHitEvent.getProjectile().getItemStack());
             }
         }, 0);
         EventValues.registerEventValue(ItemProjectileHitEvent.class, LivingEntity.class, new Getter<LivingEntity, ItemProjectileHitEvent>() {
@@ -161,10 +158,6 @@ public class EventRegistry extends AbstractTask {
                 return attachedTabCompleteEvent.getSender() instanceof Player ? ((Player) attachedTabCompleteEvent.getSender()) : null;
             }
         }, 0);
-
-        registerEvent("*Custom Expression Logic", EvtCustomExpressions.class, CustomExpressionEvent.class, "custom expression [logic [for]] %string%");
-
-        registerEvent("*Custom Property Logic", EvtCustomProperties.class, CustomPropertyExpressionEvent.class, "custom property [logic [for]] %string% of %string%");
 
         try {
 			SkQuery.getAddonInstance().loadClasses("com.w00tmast3r.skquery.elements", "events");

@@ -35,7 +35,7 @@ public class Documentation {
 	private static Set<Class<?>> conditions = new HashSet<>();
 	private static Set<Class<? extends Effect>> effects = new HashSet<>();
 	private final SkQuery instance;
-	
+
 	public Documentation(SkQuery instance) {
 		this.instance = instance;
 		if (!Reflection.getCaller().getProtectionDomain().getCodeSource().getLocation().sameFile(Documentation.class.getProtectionDomain().getCodeSource().getLocation()))
@@ -48,7 +48,7 @@ public class Documentation {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void generateEffects() throws IOException {
 		File html = new File(instance.getDataFolder().getAbsolutePath() + File.separator + "effects.html");
 		html.mkdir();

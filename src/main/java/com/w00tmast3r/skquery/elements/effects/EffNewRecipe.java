@@ -9,6 +9,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -40,7 +41,7 @@ public class EffNewRecipe extends Effect {
         ItemType i9 = m9.getSingle(event);
         if(o == null || i1 == null || i2 == null || i3 == null || i4 == null || i5 == null || i6 == null || i7 == null || i8 == null || i9 == null) return;
         if(isShapeless){
-            ShapelessRecipe r = new ShapelessRecipe(o.getRandom());
+            ShapelessRecipe r = new ShapelessRecipe(NamespacedKey.randomKey(), o.getRandom());
             if(i1.getRandom().getType() != Material.AIR) r.addIngredient(i1.getRandom().getData());
             if(i2.getRandom().getType() != Material.AIR) r.addIngredient(i2.getRandom().getData());
             if(i3.getRandom().getType() != Material.AIR) r.addIngredient(i3.getRandom().getData());
@@ -52,7 +53,7 @@ public class EffNewRecipe extends Effect {
             if(i9.getRandom().getType() != Material.AIR) r.addIngredient(i9.getRandom().getData());
             Skript.getInstance().getServer().addRecipe(r);
         } else {
-            ShapedRecipe r = new ShapedRecipe(o.getRandom());
+            ShapedRecipe r = new ShapedRecipe(NamespacedKey.randomKey(), o.getRandom());
             r.shape("abc",
                     "def",
                     "ghi");

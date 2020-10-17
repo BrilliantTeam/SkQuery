@@ -3,46 +3,52 @@ package com.w00tmast3r.skquery.elements.effects;
 import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.projectile.ItemProjectile;
 
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
 
-
-@Patterns("make %livingentity% shoot [an] item projectile [of] %itemtype% [at speed %number%]")
+@Patterns("make %livingentitys% shoot [an] item projectile [of] %itemtype% [at speed %number%]")
 public class EffShootItemProjectile extends Effect {
 
-    private Expression<ItemType> projectile;
-    private Expression<LivingEntity> shooter;
-    private Expression<Number> velocity;
+	private Expression<LivingEntity> shooters;
+	private Expression<ItemType> itemtype;
+	private Expression<Number> velocity;
 
-    @Override
-    protected void execute(Event event) {
-        ItemType p = projectile.getSingle(event);
-        LivingEntity s = shooter.getSingle(event);
-        Number n;
-        if(p == null || s == null) return;
-        if(velocity == null) n = 1;
-        else n = velocity.getSingle(event);
-        float v = n.floatValue();
-        new ItemProjectile(p.getRandom()).shoot(s, s.getLocation().getDirection().multiply(v));
-    }
-
-    @Override
-    public String toString(Event event, boolean b) {
-        return "item projectiles [happy funnygatt?]";
-    }
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        shooter = (Expression<LivingEntity>) expressions[0];
-        projectile = (Expression<ItemType>) expressions[1];
-        velocity = (Expression<Number>) expressions[2];
-        return true;
-    }
+	public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, ParseResult parseResult) {
+		shooters = (Expression<LivingEntity>) expressions[0];
+		itemtype = (Expression<ItemType>) expressions[1];
+		velocity = (Expression<Number>) expressions[2];
+		return true;
+	}
+
+	@Override
+	protected void execute(Event event) {
+		if (itemtype == null || shooters == null)
+			return;
+		ItemType itemtype = this.itemtype.getSingle(event);
+		float velocity = this.velocity != null ? this.velocity.getSingle(event).floatValue() : 1F;
+		if (velocity <= 0)
+			velocity = 1;
+		ItemProjectile projectile = new ItemProjectile(itemtype);
+		for (LivingEntity shooter : shooters.getArray(event)) {
+			Location location = shooter.getLocation();
+			projectile.shoot(shooter, location.getDirection().multiply(velocity));
+		}
+	}
+
+	@Override
+	public String toString(Event event, boolean debug) {
+		if (debug)
+			return "item projectile";
+		return "item projectile " + itemtype.toString(event, debug) + " from " + shooters.toString(event, debug);
+	}
+
 }
