@@ -1,5 +1,5 @@
 SkQuery
-v4.1.3
+v4.1.5
 =======
 
 Changes:
@@ -16,6 +16,9 @@ Changes:
 - Removed fireworks, I added them to Vanila Skript.
 - Removed SkQuery version expression, not needed.
 - Removed BookOf expression, Books are in Vanila Skript now.
+- Removed player visibility, it's in Skript.
+- Remove recipes, there are other addons with better support that SkQuery doesn't do well at.
+- Removed the custom syntax, if you want to do hackable things, try skript-mirror or skript-reflect (Updated skript-mirror)
 - Fixed 2.3 color issues
 - Fixed Yaml
 - Fixed getOnlinePlayers() crash
