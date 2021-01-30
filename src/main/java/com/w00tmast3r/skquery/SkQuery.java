@@ -6,7 +6,6 @@ import ch.njol.skript.SkriptAddon;
 import com.w00tmast3r.skquery.elements.events.EvtLambdaWhen;
 import com.w00tmast3r.skquery.skript.DynamicEnumTypes;
 import com.w00tmast3r.skquery.skript.LambdaCondition;
-import com.w00tmast3r.skquery.skript.SkqFileRegister;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;
 import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
 
@@ -30,7 +29,6 @@ public final class SkQuery extends JavaPlugin {
 		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		Registration.enableSnooper();
 		Bukkit.getPluginManager().registerEvents(new FormattedSlotManager(), this);
-		SkqFileRegister.load();
 		metrics = new Metrics(this);
 		//new Documentation(this);
 	}
