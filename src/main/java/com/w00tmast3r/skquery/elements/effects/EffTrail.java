@@ -11,12 +11,12 @@ import com.w00tmast3r.skquery.SkQuery;
 import com.w00tmast3r.skquery.annotations.Description;
 import com.w00tmast3r.skquery.annotations.Patterns;
 
-import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 
@@ -30,7 +30,7 @@ public class EffTrail extends Effect {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		if (!ScriptLoader.isCurrentEvent(ProjectileLaunchEvent.class)) {
+		if (!ParserInstance.get().isCurrentEvent(ProjectileLaunchEvent.class)) {
 			Skript.error("Trailing can only be used in a shoot event", ErrorQuality.SEMANTIC_ERROR);
 			return false;
         }

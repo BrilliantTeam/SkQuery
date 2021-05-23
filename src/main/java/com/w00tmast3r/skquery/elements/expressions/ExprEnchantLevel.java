@@ -1,17 +1,17 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
-import ch.njol.skript.ScriptLoader;
-import ch.njol.skript.Skript;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.log.ErrorQuality;
-import ch.njol.util.Kleenean;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 
 import com.w00tmast3r.skquery.annotations.Patterns;
+
+import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.parser.ParserInstance;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.log.ErrorQuality;
+import ch.njol.util.Kleenean;
 
 
 @Patterns("[the] enchant(ing|ment|) level")
@@ -38,7 +38,7 @@ public class ExprEnchantLevel extends SimpleExpression<Integer> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (!ScriptLoader.isCurrentEvent(EnchantItemEvent.class)) {
+        if (!ParserInstance.get().isCurrentEvent(EnchantItemEvent.class)) {
             Skript.error("Cannot use 'enchanting level' outside of an enchant event", ErrorQuality.SEMANTIC_ERROR);
             return false;
         }

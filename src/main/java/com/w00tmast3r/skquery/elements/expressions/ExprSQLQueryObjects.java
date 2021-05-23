@@ -1,22 +1,23 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
 
-import ch.njol.skript.ScriptLoader;
-import ch.njol.skript.Skript;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.log.ErrorQuality;
-import ch.njol.util.Kleenean;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.bukkit.event.Event;
 
 import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.sql.ScriptCredentials;
 
-import org.bukkit.event.Event;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import ch.njol.skript.Skript;
+import ch.njol.skript.config.Config;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.parser.ParserInstance;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.log.ErrorQuality;
+import ch.njol.util.Kleenean;
 
 @Patterns("objects in column %string% from %queryresult%")
 public class ExprSQLQueryObjects extends SimpleExpression<Object> {
@@ -64,7 +65,8 @@ public class ExprSQLQueryObjects extends SimpleExpression<Object> {
     @SuppressWarnings("unchecked")
 	@Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (ScriptCredentials.get(ScriptLoader.currentScript.getFile()).getConnection() == null) {
+    	Config currentScript = ParserInstance.get().getCurrentScript();
+        if (ScriptCredentials.get(currentScript.getFile()).getConnection() == null) {
             Skript.error("Database features are disabled until the script has SQL credentials associated with it.", ErrorQuality.SEMANTIC_ERROR);
             return false;
         }

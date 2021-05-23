@@ -1,10 +1,10 @@
 package com.w00tmast3r.skquery.elements.effects;
 
-import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.annotations.Description;
@@ -35,9 +35,10 @@ public class EffEvaluateEffect extends Effect {
 		if (object instanceof String) pre = (String) object;
 		else if (object instanceof Markup) pre = object.toString();
 		if (pre == null) return;
-		ScriptLoader.setCurrentEvent("this", event.getClass());
+		ParserInstance instance = ParserInstance.get();
+		instance.setCurrentEvent("this", event.getClass());
 		Effect e = Effect.parse(pre, null);
-		ScriptLoader.deleteCurrentEvent();
+		instance.deleteCurrentEvent();
 		if (e == null) return;
 		e.run(event);
 	}
