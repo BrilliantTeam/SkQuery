@@ -45,7 +45,7 @@ dependencies {
 		transitive = false
 	}
 
-	shade (group: 'org.json', name: 'json', version: '20210307')
+	shade (group: 'org.json', name: 'json', version: '20211205')
 
 }
 
