@@ -1,5 +1,4 @@
 SkQuery
-v4.1.5
 =======
 
 Changes:
