@@ -52,6 +52,8 @@ public class ExprBorderSize extends SimpleExpression<Number> {
 
 	@Override
 	public String toString(@Nullable Event event, boolean debug) {
+		if (debug || timespan == null)
+			return "size of world borders";
 		return "size of world borders " + borders.toString(event, debug) + " over time " + timespan.toString(event, debug);
 	}
 
