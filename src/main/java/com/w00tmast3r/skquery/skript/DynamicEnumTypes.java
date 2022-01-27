@@ -72,11 +72,6 @@ public class DynamicEnumTypes {
                     public String toVariableNameString(T e) {
                         return typeName + ':' + e.getValue();
                     }
-
-                    @Override
-                    public String getVariableNamePattern() {
-                        return typeName + ":.+";
-                    }
                 })
                 .serializer(new Serializer<T>() {
 

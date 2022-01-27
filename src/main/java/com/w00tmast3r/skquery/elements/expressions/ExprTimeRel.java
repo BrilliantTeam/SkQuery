@@ -21,7 +21,7 @@ public class ExprTimeRel extends SimpleExpression<Time> {
 
 	@Override
 	protected Time[] get(Event event) {
-		return new Time[]{new Time(new Long(player.getSingle(event).getPlayerTime()).intValue())};
+		return new Time[]{new Time(((Number)player.getSingle(event).getPlayerTime()).intValue())};
 	}
 
 	@Override

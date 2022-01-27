@@ -1,12 +1,13 @@
 package com.w00tmast3r.skquery.elements.effects;
 
 import ch.njol.skript.Skript;
+
 import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.doc.Name;
-import ch.njol.skript.effects.EffSpawn;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.sections.EffSecSpawn;
 import ch.njol.util.Kleenean;
 
 import com.w00tmast3r.skquery.annotations.Description;
@@ -62,7 +63,7 @@ public class EffBlockFall extends Effect {
 					block = location.getWorld().spawnFallingBlock(location, new MaterialData(itemstack.getType(), (byte) itemstack.getDurability()));
 				else
 					block = location.getWorld().spawnFallingBlock(location, itemstack.getType().createBlockData());
-				EffSpawn.lastSpawned = block;
+				EffSecSpawn.lastSpawned = block;
 				if (damages) {
 					try {
 						Object craftSand = Reflection.getOBCClass("entity.CraftFallingSand").getMethod("getHandle").invoke(block);

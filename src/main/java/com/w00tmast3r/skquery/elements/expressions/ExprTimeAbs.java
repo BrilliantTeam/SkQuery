@@ -24,7 +24,7 @@ public class ExprTimeAbs extends SimplePropertyExpression<Player, Time> {
 
     @Override
     public Time convert(Player player) {
-        return new Time(new Long(player.getPlayerTime()).intValue());
+        return new Time(((Number)player.getPlayerTime()).intValue());
     }
 
     @Override

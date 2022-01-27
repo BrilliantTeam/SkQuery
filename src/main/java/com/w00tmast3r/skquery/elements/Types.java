@@ -47,11 +47,6 @@ public class Types extends AbstractTask {
 				public String toVariableNameString(Markup markup) {
 					return markup.toString();
 				}
-
-				@Override
-				public String getVariableNamePattern() {
-					return ".+";
-				}
 			}).serializer(new Serializer<Markup>() {
 				@Override
 				public Fields serialize(Markup markup) throws NotSerializableException {
@@ -115,11 +110,6 @@ public class Types extends AbstractTask {
 				public String toVariableNameString(LambdaCondition lambdaCondition) {
 					return lambdaCondition.toString();
 				}
-
-				@Override
-				public String getVariableNamePattern() {
-					return ".+";
-				}
 			}));
 
 		Classes.registerClass(new ClassInfo<>(LambdaEffect.class, "lambda")
@@ -151,11 +141,6 @@ public class Types extends AbstractTask {
 				@Override
 				public String toVariableNameString(LambdaEffect lambdaEffect) {
 					return lambdaEffect.toString();
-				}
-
-				@Override
-				public String getVariableNamePattern() {
-					return ".+";
 				}
 			}));
 	}
