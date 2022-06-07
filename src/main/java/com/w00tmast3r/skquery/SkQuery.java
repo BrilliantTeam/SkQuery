@@ -1,5 +1,6 @@
 package com.w00tmast3r.skquery;
 
+import ch.njol.skript.Metrics;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 
