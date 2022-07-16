@@ -32,9 +32,10 @@ public class EffPathfind extends Effect {
     protected void execute(Event event) {
         Location l = loc.getSingle(event);
         Number s = speed.getSingle(event);
-        if(l == null || s == null) return;
+        if (l == null || s == null) return;
         for (LivingEntity e : entity.getAll(event)) {
-            if (e instanceof Player) continue;
+            if (e instanceof Player)
+            	continue;
             try {
                 Object entityInsentient = Reflection.getOBCClass("entity.CraftLivingEntity").getMethod("getHandle").invoke(e);
                 Object navigation = Reflection.getNMSClass("EntityInsentient").getMethod("getNavigation").invoke(entityInsentient);

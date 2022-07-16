@@ -40,6 +40,8 @@ dependencies {
 		transitive = false
 	}
 
+	shadow group: 'org.bstats', name: 'bstats-bukkit', version: '3.0.0'
+
 	shadow (group: 'org.json', name: 'json', version: '20220320')
 
 }
@@ -57,6 +59,10 @@ processResources {
 
 shadowJar {
 	configurations = [project.configurations.shadow]
+	dependencies {
+		include(dependency('org.bstats:bstats-bukkit'))
+		include(dependency('org.bstats:bstats-base'))
+	}
 	archiveVersion = version
 	baseName = project.name
 	classifier = ''

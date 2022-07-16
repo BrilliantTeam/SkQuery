@@ -1,51 +1,54 @@
 package com.w00tmast3r.skquery.elements.expressions;
 
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.util.Direction;
-import ch.njol.util.Kleenean;
+import org.bukkit.Location;
+import org.bukkit.event.Event;
 
 import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 
-import org.bukkit.Location;
-import org.bukkit.event.Event;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.util.Direction;
+import ch.njol.util.Kleenean;
 
-
-@Patterns("[the] direction from %location% to %location%")
+@Patterns("direction from %location% to %location%")
 public class ExprDirectionFromTo extends SimpleExpression<Direction> {
 
-    private Expression<Location> from, to;
+	private Expression<Location> from, to;
 
-    @Override
-    protected Direction[] get(Event event) {
-        Location f = from.getSingle(event);
-        Location t = to.getSingle(event);
-        if (f == null || t == null) return null;
-        return Collect.asArray(new Direction(t.toVector().subtract(f.toVector())));
-    }
-
-    @Override
-    public boolean isSingle() {
-        return true;
-    }
-
-    @Override
-    public Class<? extends Direction> getReturnType() {
-        return Direction.class;
-    }
-
-    @Override
-    public String toString(Event event, boolean b) {
-        return "dir fr to";
-    }
-
-    @SuppressWarnings("unchecked")
 	@Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        from = (Expression<Location>) expressions[0];
-        to = (Expression<Location>) expressions[1];
-        return true;
-    }
+	public boolean isSingle() {
+		return true;
+	}
+
+	@Override
+	public Class<? extends Direction> getReturnType() {
+		return Direction.class;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean kleenean, ParseResult parseResult) {
+		from = (Expression<Location>) expressions[0];
+		to = (Expression<Location>) expressions[1];
+		return true;
+	}
+
+	@Override
+	protected Direction[] get(Event event) {
+		Location from = this.from.getSingle(event);
+		Location to = this.to.getSingle(event);
+		if (from == null || to == null)
+			return null;
+		return Collect.asArray(new Direction(to.toVector().subtract(from.toVector())));
+	}
+
+	@Override
+	public String toString(Event event, boolean debug) {
+		if (event == null || debug)
+			return "direction from";
+		return "direction from " + from.toString(event, debug) + " to " + to.toString(event, debug);
+	}
+
 }

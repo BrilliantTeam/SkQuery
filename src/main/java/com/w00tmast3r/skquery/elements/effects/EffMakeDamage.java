@@ -31,15 +31,18 @@ public class EffMakeDamage extends Effect {
 		number = (Expression<Number>) expressions[2];
 		return true;
 	}
-	
+
 	@Override
 	protected void execute(Event event) {
 		Number damage = number.getSingle(event);
-		if (damage == null) return;
+		if (damage == null)
+			return;
 		for (LivingEntity victim : victims.getArray(event)) {
 			for (LivingEntity attacker : attackers.getArray(event)) {
 				victim.damage(damage.doubleValue(), attacker);
-				if (attacker instanceof Creature) ((Creature) attacker).setTarget(victim);
+				attacker.attack(victim);
+				if (attacker instanceof Creature)
+					((Creature) attacker).setTarget(victim);
 			}
 		}
 	}
