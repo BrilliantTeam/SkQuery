@@ -23,7 +23,6 @@ Changes:
 - Fixed getOnlinePlayers() crash
 - Fixed glowing itemtype
 - Fixed protocolib crash error
-- Fixed the permission manager
 - Fixed a bunch of null pointers
 - Fixed Time Relative not being able to be reset
 - Fixed pop firework effect but removed clientside ability. New syntax:
