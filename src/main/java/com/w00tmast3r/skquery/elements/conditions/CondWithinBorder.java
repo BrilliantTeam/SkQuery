@@ -35,6 +35,8 @@ public class CondWithinBorder extends Condition {
 	@Override
 	public boolean check(Event event) {
 		WorldBorder border = worldBorder.getSingle(event);
+		if (border == null)
+			return false;
 		return locations.check(event, location -> border.isInside(location), isNegated());
 	}
 
