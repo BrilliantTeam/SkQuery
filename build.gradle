@@ -7,6 +7,11 @@ plugins {
 	id 'java'
 }
 
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
 repositories {
 	mavenCentral()
 
@@ -63,6 +68,7 @@ shadowJar {
 		include(dependency('org.bstats:bstats-bukkit'))
 		include(dependency('org.bstats:bstats-base'))
 	}
+	relocate 'org.bstats', 'com.w00tmast3r.skquery.bstats'
 	archiveVersion = version
 	baseName = project.name
 	classifier = ''
