@@ -22,11 +22,11 @@ import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.Changer.ChangeMode;
-import ch.njol.skript.classes.Converter;
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.ErrorQuality;
+import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 
 @UsePropertyPatterns
@@ -60,9 +60,9 @@ public class ExprInventoryNameContainer extends PropertyExpression<Inventory, St
 
 	@Override
 	protected String[] get(Event event, Inventory[] source) {
-		return get(source, new Converter<Inventory, String>() {
+		return get(source, new Getter<String, Inventory>() {
 			@Override
-			public String convert(Inventory inventory) {
+			public @Nullable String get(Inventory inventory) {
 				if (older)
 					try {
 						return (String) method.invoke(inventory);

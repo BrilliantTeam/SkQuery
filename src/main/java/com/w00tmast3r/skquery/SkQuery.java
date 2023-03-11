@@ -1,5 +1,7 @@
 package com.w00tmast3r.skquery;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.bstats.bukkit.Metrics;
@@ -16,6 +18,8 @@ import com.w00tmast3r.skquery.util.menus.FormattedSlotManager;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import ch.njol.skript.config.Config;
+import ch.njol.skript.lang.parser.ParserInstance;
 
 public final class SkQuery extends JavaPlugin {
 
@@ -62,6 +66,29 @@ public final class SkQuery extends JavaPlugin {
 
 	public static Metrics getMetrics() {
 		return metrics;
+	}
+
+	private static boolean OLDER_2_7 = Skript.methodExists(ParserInstance.class, "getCurrentScript", null, Config.class);
+	private static Method method;
+	static {
+		try {
+			method = ParserInstance.class.getMethod("getCurrentScript");
+		} catch (NoSuchMethodException | SecurityException e) {}
+	}
+
+	/**
+	 * To support Skript 2.6.4 with 2.7 support
+	 */
+	@Deprecated
+	public static Config getConfig(ParserInstance parser) {
+		if (OLDER_2_7) {
+			try {
+				return (Config) method.invoke(parser);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}
+		} else {
+			return parser.getCurrentScript().getConfig();
+		}
+		return null;
 	}
 
 }

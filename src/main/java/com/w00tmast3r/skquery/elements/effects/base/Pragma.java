@@ -21,7 +21,7 @@ public abstract class Pragma extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        register(ParserInstance.get().getCurrentScript().getFile(), parseResult);
+        register(ParserInstance.get().getCurrentScript().getConfig().getFile(), parseResult);
         return true;
     }
 
