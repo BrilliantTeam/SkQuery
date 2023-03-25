@@ -1,22 +1,5 @@
 package com.w00tmast3r.skquery;
 
-import ch.njol.skript.Skript;
-import ch.njol.skript.conditions.base.PropertyCondition;
-import ch.njol.skript.lang.Condition;
-import ch.njol.skript.lang.Effect;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
-
-import com.w00tmast3r.skquery.annotations.*;
-import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
-import com.w00tmast3r.skquery.elements.effects.base.Pragma;
-import com.w00tmast3r.skquery.util.IterableEnumeration;
-import com.w00tmast3r.skquery.util.Reflection;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.PluginDescriptionFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -26,6 +9,29 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
+
+import com.w00tmast3r.skquery.annotations.AbstractTask;
+import com.w00tmast3r.skquery.annotations.AntiDependency;
+import com.w00tmast3r.skquery.annotations.Dependency;
+import com.w00tmast3r.skquery.annotations.Disabled;
+import com.w00tmast3r.skquery.annotations.Patterns;
+import com.w00tmast3r.skquery.annotations.PropertyFrom;
+import com.w00tmast3r.skquery.annotations.PropertyTo;
+import com.w00tmast3r.skquery.annotations.UsePropertyPatterns;
+import com.w00tmast3r.skquery.elements.effects.base.OptionsPragma;
+import com.w00tmast3r.skquery.elements.effects.base.Pragma;
+import com.w00tmast3r.skquery.util.IterableEnumeration;
+import com.w00tmast3r.skquery.util.Reflection;
+
+import ch.njol.skript.Skript;
+import ch.njol.skript.conditions.base.PropertyCondition;
+import ch.njol.skript.lang.Condition;
+import ch.njol.skript.lang.Effect;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
 
 public class Registration {
 
@@ -38,36 +44,32 @@ public class Registration {
 		} catch (URISyntaxException e) {
 			src = new File(callerLocation.getPath());
 		}
+		PluginDescriptionFile desc = SkQuery.getInstance().getDescription();
+		Bukkit.getLogger().info("[skQuery] Locating classes from " + desc.getName() + "...");
 		try {
-			PluginDescriptionFile desc = SkQuery.getInstance().getPluginLoader().getPluginDescription(src);
-			Bukkit.getLogger().info("[skQuery] Locating classes from " + desc.getName() + "...");
-			try {
-				Set<Class<?>> classes = new HashSet<>();
-				@SuppressWarnings("resource")
-				JarFile jar = new JarFile(src);
-				for (JarEntry e : new IterableEnumeration<>(jar.entries())) {
-					if (e.getName().endsWith(".class")) {
-						String className = e.getName().replace('/', '.').substring(0, e.getName().length() - 6);
-						try {
-							Class<?> c = Class.forName(className, false, caller.getClassLoader());
-							if (c == Pragma.class || c == OptionsPragma.class || c == AbstractTask.class) continue;
-							if (Effect.class.isAssignableFrom(c)
-									|| Condition.class.isAssignableFrom(c)
-									|| Expression.class.isAssignableFrom(c)
-									|| AbstractTask.class.isAssignableFrom(c)) {
-								classes.add(c);
-							}
-						} catch (ClassNotFoundException error) {
-							error.printStackTrace();
-						} catch (NoClassDefFoundError | ExceptionInInitializerError | IllegalAccessError ignored) {
+			Set<Class<?>> classes = new HashSet<>();
+			@SuppressWarnings("resource")
+			JarFile jar = new JarFile(src);
+			for (JarEntry e : new IterableEnumeration<>(jar.entries())) {
+				if (e.getName().endsWith(".class")) {
+					String className = e.getName().replace('/', '.').substring(0, e.getName().length() - 6);
+					try {
+						Class<?> c = Class.forName(className, false, caller.getClassLoader());
+						if (c == Pragma.class || c == OptionsPragma.class || c == AbstractTask.class) continue;
+						if (Effect.class.isAssignableFrom(c)
+								|| Condition.class.isAssignableFrom(c)
+								|| Expression.class.isAssignableFrom(c)
+								|| AbstractTask.class.isAssignableFrom(c)) {
+							classes.add(c);
 						}
+					} catch (ClassNotFoundException error) {
+						error.printStackTrace();
+					} catch (NoClassDefFoundError | ExceptionInInitializerError | IllegalAccessError ignored) {
 					}
 				}
-				register(desc, classes.toArray(new Class[classes.size()]));
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
-		} catch (InvalidDescriptionException e) {
+			register(desc, classes.toArray(new Class[classes.size()]));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

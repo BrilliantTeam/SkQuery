@@ -2,6 +2,7 @@ package com.w00tmast3r.skquery.elements.expressions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Container;
@@ -26,7 +27,6 @@ import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.ErrorQuality;
-import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 
 @UsePropertyPatterns
@@ -60,28 +60,25 @@ public class ExprInventoryNameContainer extends PropertyExpression<Inventory, St
 
 	@Override
 	protected String[] get(Event event, Inventory[] source) {
-		return get(source, new Getter<String, Inventory>() {
-			@Override
-			public @Nullable String get(Inventory inventory) {
-				if (older)
-					try {
-						return (String) method.invoke(inventory);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-						return null;
-					}
-				InventoryHolder holder = inventory.getHolder();
-				if (holder == null || !(holder instanceof Container)) {
-					if (event instanceof InventoryClickEvent) {
-						InventoryClickEvent inventoryEvent = ((InventoryClickEvent)event);
-						if (inventoryEvent.getClickedInventory() == inventory)
-							return inventoryEvent.getView().getTitle();
-					}
-					Skript.error("In 1.13+ you cannot get the title name of an inventory outside of an InventoryClickEvent, Only if this inventory has an InventoryHolder may it be used in this state.", ErrorQuality.SEMANTIC_ERROR);
+		return Arrays.stream(source).map(inventory -> {
+			if (older)
+				try {
+					return (String) method.invoke(inventory);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					return null;
 				}
-				return ((Container)holder).getCustomName();
+			InventoryHolder holder = inventory.getHolder();
+			if (holder == null || !(holder instanceof Container)) {
+				if (event instanceof InventoryClickEvent) {
+					InventoryClickEvent inventoryEvent = ((InventoryClickEvent)event);
+					if (inventoryEvent.getClickedInventory() == inventory)
+						return inventoryEvent.getView().getTitle();
+				}
+				Skript.error("In 1.13+ you cannot get the title name of an inventory outside of an InventoryClickEvent, Only if this inventory has an InventoryHolder may it be used in this state.", ErrorQuality.SEMANTIC_ERROR);
+				return null;
 			}
-		});
+			return ((Container)holder).getCustomName();
+		}).toArray(String[]::new);
 	}
 
 	@Override
