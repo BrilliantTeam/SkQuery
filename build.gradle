@@ -70,7 +70,6 @@ shadowJar {
 	}
 	relocate 'org.bstats', 'com.w00tmast3r.skquery.bstats'
 	archiveVersion = version
-	baseName = project.name
-	classifier = ''
+	archiveFileName = project.name + "-" + version + ".jar"
 	minimize()
 }
