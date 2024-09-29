@@ -58,7 +58,7 @@ public class EffOptionDeveloperMode extends OptionsPragma {
 				}
 			}
 		};
-		task.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(SkQuery.getInstance(), task, 0, 100));
+		task.setTaskId(Bukkit.getGlobalRegionScheduler().runAtFixedRate(SkQuery.getInstance(), (ignored) -> task.run(), 1, 100));
 	}
 
 }

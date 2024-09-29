@@ -20,13 +20,10 @@ public class EvtLambdaWhen extends SkriptEvent {
 	
 	static {
 		Skript.registerEvent("*Lambda when", EvtLambdaWhen.class, LambdaEvent.class, "when %predicate% [[with] limit[(ing|er)] %-boolean%]");
-        
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(SkQuery.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				Bukkit.getServer().getPluginManager().callEvent(new LambdaEvent());
-			}
-        }, 1, 1);
+
+		Bukkit.getGlobalRegionScheduler().runAtFixedRate(SkQuery.getInstance(), (ignored) -> {
+			Bukkit.getServer().getPluginManager().callEvent(new LambdaEvent());
+		}, 1, 1);
 	}
 	
 	private LambdaCondition lambda;

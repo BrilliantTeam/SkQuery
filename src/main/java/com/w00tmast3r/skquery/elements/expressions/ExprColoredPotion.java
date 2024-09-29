@@ -8,13 +8,12 @@ import ch.njol.util.Kleenean;
 import com.w00tmast3r.skquery.annotations.Patterns;
 import com.w00tmast3r.skquery.util.Collect;
 
+import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
 @SuppressWarnings("deprecation")
 @Patterns("blank %potioneffecttype% [colo[u]r[ed]] potion")
@@ -27,7 +26,7 @@ public class ExprColoredPotion extends SimpleExpression<ItemStack> {
 		PotionEffectType potion = effect.getSingle(event);
 		if (potion == null)
 			return null;
-		ItemStack item = new Potion(PotionType.getByEffect(potion)).toItemStack(1);
+		ItemStack item = new ItemStack(Material.POTION);
 		PotionMeta meta = ((PotionMeta) item.getItemMeta());
 		meta.addCustomEffect(new PotionEffect(potion, 0, 0), true);
 		item.setItemMeta(meta);

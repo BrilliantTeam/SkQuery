@@ -51,7 +51,7 @@ public class EffOptionThread extends Pragma {
                 }
             }
         };
-        task.setTaskId(Bukkit.getScheduler().scheduleSyncRepeatingTask(SkQuery.getInstance(), task, 0, 1));
+        task.setTaskId(Bukkit.getGlobalRegionScheduler().runAtFixedRate(SkQuery.getInstance(), (ignored) -> task.run(), 1, 1));
         return null;
     }
 

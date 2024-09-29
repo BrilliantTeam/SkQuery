@@ -71,12 +71,9 @@ public class FormattedSlotManager implements Listener {
 			SlotRule rule = playerRules.get(uuid).getFirst().get(event.getSlot());
 			rule.run(playerRules.get(uuid).getSecond());
 			if (rule.willClose()) {
-				Bukkit.getScheduler().runTaskLater(SkQuery.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						player.getOpenInventory().close();
-					}
-				}, 1);
+				player.getScheduler().runDelayed(SkQuery.getInstance(), (ignored) -> {
+					player.getOpenInventory().close();
+				}, null, 1);
 			}
 		}
 	}
@@ -88,14 +85,11 @@ public class FormattedSlotManager implements Listener {
 			exempt.remove(uuid);
 			return;
 		}
-		Bukkit.getScheduler().runTaskLater(SkQuery.getInstance(), new Runnable() {
-			@Override
-			public void run() {
-				if (playerRules.containsKey(uuid)) {
-					if (playerRules.get(uuid) != null)
-						playerRules.get(uuid).getFirst().clear();
-					playerRules.get(uuid).setSecond(null);
-				}
+		Bukkit.getGlobalRegionScheduler().runDelayed(SkQuery.getInstance(), (ignored) -> {
+			if (playerRules.containsKey(uuid)) {
+				if (playerRules.get(uuid) != null)
+					playerRules.get(uuid).getFirst().clear();
+				playerRules.get(uuid).setSecond(null);
 			}
 		}, 1);
 	}

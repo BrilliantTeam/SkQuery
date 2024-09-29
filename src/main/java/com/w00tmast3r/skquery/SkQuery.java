@@ -27,7 +27,7 @@ public final class SkQuery extends JavaPlugin {
 
 	private static SkriptAddon addonInstance;
 	private static SkQuery instance;
-	private static Metrics metrics;
+	// private static Metrics metrics;
 
 	@Override
 	public void onEnable() {
@@ -36,10 +36,12 @@ public final class SkQuery extends JavaPlugin {
 		addonInstance = Skript.registerAddon(this).setLanguageFileDirectory("lang");
 		Registration.enableSnooper();
 		Bukkit.getPluginManager().registerEvents(new FormattedSlotManager(), this);
+		/*
 		metrics = new Metrics(this, 437);
+
 		metrics.addCustomChart(new SimplePie("skriptVersion", () ->
 			Skript.getInstance().getDescription().getVersion()
-		));
+		));*/
 		//new Documentation(this);
 	}
 
@@ -64,9 +66,9 @@ public final class SkQuery extends JavaPlugin {
 		return instance;
 	}
 
-	public static Metrics getMetrics() {
+	/*public static Metrics getMetrics() {
 		return metrics;
-	}
+	}*/
 
 	private static boolean OLDER_2_7 = Skript.methodExists(ParserInstance.class, "getCurrentScript", null, Config.class);
 	private static Method method;
